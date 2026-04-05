@@ -1,8 +1,8 @@
 # mealea-web
-
+```
 npm install express mongoose cors dotenv bcrypt jsonwebtoken stripe
 
-mealea-restaurant/
+mealea-web/
 │
 ├── client/                         # Frontend (HTML, CSS, JS)
 │   ├── pages/
@@ -71,3 +71,4 @@ mealea-restaurant/
 │
 ├── README.md
 └── .gitignore
+```
