@@ -1,18 +1,45 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
+const menuRoutes = require('./routes/menuRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
-const connectDB = require("./config/db");
+// Load env vars
+dotenv.config();
+
+// Connect to database
+connectDB();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
+// Middleware
+app.use(express.json()); // JSON payloads
+app.use(cookieParser()); // cookies for JWT
+app.use(cors({
+    origin: process.env.CLIENT_URL, // Allow requests from our react frontend
+    credentials: true // for cookie
+}));
 
-// connect DB
-connectDB();
 
-// routes
-app.use("/api/menu", require("./routes/menuRoutes"));
+// Authentication Routes
+app.use('/api/auth', authRoutes);
 
-app.listen(5000, () => console.log("Server running on port 5000"));
+// Menu Routes
+app.use('/api/menu', menuRoutes);
+
+
+
+
+app.get('/', (req, res) => {
+    res.send('Mealea API is running...');
+});
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
