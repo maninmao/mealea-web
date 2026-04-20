@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/reserv.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <title>Reservation – Mealea Restaurant</title>
+</head>
+<body>
+
+<div class="page-container">
+
+    <!-- NAV -->
+    <header class="header">
+        <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo">
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="reservation.html" class="nav-active">Reservation</a>
+        </nav>
+        <div class="nav-auth-area">
+            <div id="nav-user-info" style="display:none; align-items:center; gap:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#72383d;">
+                <span>👤 <span id="nav-username"></span></span>
+                <button onclick="handleLogout()" class="nav-logout-btn">Sign Out</button>
+            </div>
+            <a href="login.html" id="nav-login-btn" class="nav-login-btn">Sign In</a>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook Icon"></a>
+                <a href="https://instagram.com/aupp.edu.kh"><img src="../assets/images/ig.png" alt="Instagram Icon"></a>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = sessionStorage.getItem('mealea_user');
+            if (user) {
+                const parsedUser = JSON.parse(user);
+                document.getElementById('nav-user-info').style.display = 'flex';
+                document.getElementById('nav-username').textContent = parsedUser.name;
+                document.getElementById('nav-login-btn').style.display = 'none';
+            }
+        });
+        function handleLogout() {
+            sessionStorage.removeItem('mealea_user');
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <!-- MAIN RESERVATION LAYOUT -->
+    <main class="res-main">
+
+        <!-- LEFT COLUMN -->
+        <div class="res-left">
+
+            <!-- PARTY SIZE -->
+            <div class="res-step">
+                <div class="step-num">01</div>
+                <h2 class="step-title">Party Size</h2>
+            </div>
+            <div class="party-size">
+                <button class="guest-btn" onclick="selectGuests(1, this)">1</button>
+                <button class="guest-btn" onclick="selectGuests(2, this)">2</button>
+                <button class="guest-btn" onclick="selectGuests(3, this)">3</button>
+                <button class="guest-btn" onclick="selectGuests(4, this)">4</button>
+                <button class="guest-btn" onclick="selectGuests(5, this)">5</button>
+                <button class="guest-btn" onclick="selectGuests(6, this)">6</button>
+                <!-- <button class="guest-btn guest-plus" onclick="selectGuests(7, this)">+</button> -->
+                 <button class="guest-btn guest-plus" onclick="addGuest(this)">+</button>
+            </div>
+
+            <!-- DATE -->
+            <div class="res-step">
+                <div class="step-num">02</div>
+                <h2 class="step-title">Select Date</h2>
+            </div>
+            <div class="calendar-card">
+                <div class="cal-header">
+                    <span class="cal-month-label" id="cal-month-label"></span>
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8249;</button>
+                        <button class="cal-nav-btn" onclick="changeMonth(1)">&#8250;</button>
+                    </div>
+                </div>
+                <div class="cal-weekdays">
+                    <span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+                </div>
+                <div class="cal-grid" id="cal-grid"></div>
+            </div>
+
+            <!-- TIME -->
+            <div class="res-step">
+                <div class="step-num">03</div>
+                <h2 class="step-title">Dinner Seatings</h2>
+            </div>
+            <!-- <div class="seating-label">First Seating</div> -->
+            <div class="time-slots">
+                <button class="time-btn" onclick="selectTime('17:30', this)">17:30</button>
+                <button class="time-btn" onclick="selectTime('18:00', this)">18:00</button>
+                <button class="time-btn" onclick="selectTime('18:30', this)">18:30</button>
+                <button class="time-btn" onclick="selectTime('19:00', this)">19:00</button>
+            </div><br>
+            <!-- <div class="seating-label" style="margin-top: 16px;">Second Seating</div> -->
+            <div class="time-slots">
+                <button class="time-btn" onclick="selectTime('20:30', this)">20:30</button>
+                <button class="time-btn" onclick="selectTime('21:00', this)">21:00</button>
+                <button class="time-btn" onclick="selectTime('21:30', this)">21:30</button>
+                <button class="time-btn time-disabled" disabled>22:00</button>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="res-right">
+            <div class="summary-card">
+                <!-- Photo area -->
+                <div class="summary-photo">
+                    <img src="../assets/images/img1.png" alt="Restaurant Evening" onerror="this.style.display='none'">
+                    <div class="summary-photo-overlay">
+                        <span class="summary-photo-label">Selected Evening</span>
+                    </div>
+                </div>
+
+                <!-- Summary details -->
+                <div class="summary-body">
+                    <div class="summary-grid">
+                        <div class="summary-field">
+                            <span class="field-label">DATE</span>
+                            <span class="field-value" id="sum-date">—</span>
+                        </div>
+                        <div class="summary-field">
+                            <span class="field-label">TIME</span>
+                            <span class="field-value" id="sum-time">—</span>
+                        </div>
+                        <div class="summary-field">
+                            <span class="field-label">PARTY SIZE</span>
+                            <span class="field-value" id="sum-guests">—</span>
+                        </div>
+                        <div class="summary-field">
+                            <span class="field-label">EXPERIENCE</span>
+                            <span class="field-value">Tasting Menu</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-divider"></div>
+
+                    <p class="summary-quote">"A curated journey through seasonal clay-fired dishes, paired with regional heritage wines."</p>
+
+                    <div class="summary-note">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        No deposit required for parties under 6
+                    </div>
+
+                    <button class="confirm-btn" onclick="confirmReservation()">
+                        Confirm Reservation &rarr;
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">
+            <img src="../assets/images/logo.png" alt="Mealea Logo" height="100">
+            <div class="social-icons">
+                <img src="../assets/images/fb.png" alt="Facebook" height="24">
+                <img src="../assets/images/ig.png" alt="Instagram" height="24">
+            </div>
+        </div>
+        <div class="footer-info">
+            <div>
+                <p class="info-title">Opening Hours</p>
+                <p>Lunch Service: 11:30 AM – 2:00 PM</p>
+                <p>Dinner Service: 5:30 PM – 10:00 PM</p>
+            </div>
+            <div>
+                <p class="info-title">Contact</p>
+                <p>Phone: (123) 456-7890</p>
+                <p>Email: mealea@gmail.com</p>
+            </div>
+        </div>
+        <div class="copyright">© 2024 Mealea. All rights reserved.</div>
+    </footer>
+
+</div>
+
+<script src="../js/reservation.js"></script>
+
+</body>
+</html>

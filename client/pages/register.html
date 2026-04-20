@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account – Mealea Restaurant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+    <div class="auth-wrapper">
+
+        <!-- LEFT PANEL -->
+        <div class="auth-brand">
+            <div class="brand-overlay"></div>
+            <div class="brand-content">
+                <img src="../assets/images/logowhite.png" alt="Mealea Logo" class="brand-logo" onerror="this.style.display='none'">
+                <h1 class="brand-name">មាលា</h1>
+                <p class="brand-tagline">KHMER AUTHENTIC RESTAURANT</p>
+                <div class="brand-divider"></div>
+                <p class="brand-quote">"A chef doesn't just feed<br>the body, but nourishes the soul."</p>
+                <p class="brand-attr">— Chef Sok Sabay</p>
+            </div>
+            <div class="petal p1"></div>
+            <div class="petal p2"></div>
+            <div class="petal p3"></div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="auth-form-side">
+            <div class="auth-card">
+
+                <a href="login.html" class="back-link">← Back to Login</a>
+
+                <div class="auth-card-header">
+                    <h2>Create Account</h2>
+                    <p>Join Mealea to enjoy exclusive member benefits</p>
+                </div>
+
+                <div id="reg-error" class="auth-alert hidden"></div>
+                <div id="reg-success" class="auth-alert success hidden">
+                    ✓ Account created! Redirecting to login…
+                </div>
+
+                <div class="fields-row">
+                    <div class="auth-field">
+                        <label for="first-name">First Name</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="first-name" placeholder="Sokha">
+                        </div>
+                    </div>
+                    <div class="auth-field">
+                        <label for="last-name">Last Name</label>
+                        <div class="input-wrap">
+                            <input type="text" id="last-name" placeholder="Chan">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="reg-email">Email Address</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">✉</span>
+                        <input type="email" id="reg-email" placeholder="you@example.com">
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">📞</span>
+                        <input type="tel" id="phone" placeholder="+855 012 345 678">
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="reg-password">Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="reg-password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+                        <button class="toggle-pass" onclick="togglePassword('reg-password', this)" type="button">Show</button>
+                    </div>
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strength-fill"></div>
+                    </div>
+                    <p class="strength-label" id="strength-label"></p>
+                </div>
+
+                <div class="auth-field">
+                    <label for="confirm-pass">Confirm Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="confirm-pass" placeholder="Re-enter password">
+                    </div>
+                </div>
+
+                <label class="terms-check">
+                    <input type="checkbox" id="terms">
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </label>
+
+                <button class="auth-btn" onclick="handleRegister()">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+
+                <p class="auth-switch">
+                    Already have an account? <a href="login.html">Sign in →</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+    function handleRegister() {
+        const first    = document.getElementById('first-name').value.trim();
+        const last     = document.getElementById('last-name').value.trim();
+        const email    = document.getElementById('reg-email').value.trim();
+        const phone    = document.getElementById('phone').value.trim();
+        const pass     = document.getElementById('reg-password').value;
+        const confirm  = document.getElementById('confirm-pass').value;
+        const terms    = document.getElementById('terms').checked;
+        const errEl    = document.getElementById('reg-error');
+        const btn      = document.querySelector('.auth-btn');
+
+        const showErr = msg => {
+            errEl.textContent = '⚠️ ' + msg;
+            errEl.classList.remove('hidden');
+            document.querySelector('.auth-card').classList.add('shake');
+            setTimeout(() => document.querySelector('.auth-card').classList.remove('shake'), 500);
+        };
+
+        errEl.classList.add('hidden');
+
+        if (!first || !last)  { showErr('Please enter your full name.'); return; }
+        if (!email)           { showErr('Please enter a valid email address.'); return; }
+        if (!phone)           { showErr('Please enter your phone number.'); return; }
+        if (pass.length < 8)  { showErr('Password must be at least 8 characters.'); return; }
+        if (pass !== confirm) { showErr('Passwords do not match.'); return; }
+        if (!terms)           { showErr('Please accept the Terms of Service.'); return; }
+
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        setTimeout(() => {
+            const user = { name: first + ' ' + last, email, phone };
+            localStorage.setItem('mealea_registered', JSON.stringify(user));
+            document.getElementById('reg-success').classList.remove('hidden');
+            setTimeout(() => { window.location.href = 'login.html'; }, 1800);
+        }, 1000);
+    }
+
+    function togglePassword(id, btn) {
+        const input = document.getElementById(id);
+        if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+        else                           { input.type = 'password'; btn.textContent = 'Show'; }
+    }
+
+    function checkStrength(val) {
+        const fill  = document.getElementById('strength-fill');
+        const label = document.getElementById('strength-label');
+        let score = 0;
+        if (val.length >= 8)           score++;
+        if (/[A-Z]/.test(val))         score++;
+        if (/[0-9]/.test(val))         score++;
+        if (/[^A-Za-z0-9]/.test(val))  score++;
+
+        const levels = [
+            { pct: '0%',   color: 'transparent', text: '' },
+            { pct: '25%',  color: '#e57373',      text: 'Weak' },
+            { pct: '50%',  color: '#ffb74d',      text: 'Fair' },
+            { pct: '75%',  color: '#81c784',      text: 'Good' },
+            { pct: '100%', color: '#4caf50',       text: 'Strong' },
+        ];
+        const l = levels[score] || levels[0];
+        fill.style.width      = l.pct;
+        fill.style.background = l.color;
+        label.textContent     = l.text;
+        label.style.color     = l.color;
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
+</script>
+</body>
+</html>

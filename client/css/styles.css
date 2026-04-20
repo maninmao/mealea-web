@@ -1,0 +1,548 @@
+/* Global Styles */
+ body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Crimson Text', serif;
+  background-color: #fff;
+  scroll-behavior: smooth;
+}
+
+p {
+  font-family: 'Crimson Text', serif;
+}
+
+/* Universal Box Sizing */
+* {
+  box-sizing: border-box;
+}
+
+@keyframes flyIn {
+  from {
+      transform: translateX(100%); /* Starts fully off-screen to the right */
+  }
+  to {
+      transform: translateX(0); /* Ends at its original position */
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+  animation: flyIn 2.2s ease-in-out forwards; /* Ensure correct easing and forwards behavior */
+  background-color: #fff; /* Ensure it's visible */
+}
+
+
+/* Header */
+/* .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  animation: fadeInHeader 2.2s forwards;
+  background-color: #fff;
+  z-index: 5;
+  position: sticky;
+  top: 0;
+  width: 100%;
+} */
+
+.logo {
+  height: 100px;
+  margin-left: 80px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 115px;
+}
+
+.nav-links a {
+  font-family: "Cinzel", serif;
+  font-weight: 900;
+  text-decoration: none;
+  color: #72383d;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: goldenrod;
+}
+
+.social-icons {
+  display: flex;
+  margin-right: 100px;
+}
+
+.social-icons img {
+  height: 24px;
+}
+
+/* Header Animation */
+@keyframes fadeInHeader {
+  from {
+      transform: translateY(-100%);
+  }
+  to {
+      transform: translateY(0);
+  }
+}
+
+.slideshow {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.slideshow img {
+  width: 100%;
+  height: auto;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slideshow img.active {
+  opacity: 1;
+}
+
+
+/* Slideshow Section */
+.Section_top {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-image: url('../assets/images/img1.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+  animation: slideShow 15s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes slideShow {
+  0% {
+      background-image: url('../assets/images/1.svg');
+  }
+  20% {
+      background-image: url('../assets/images/2.svg');
+  }
+
+  40% {
+      background-image: url('../assets/images/3.svg');
+  }
+  80% {
+      background-image: url('../assets/images/4.svg');
+  }
+
+  100% {
+      background-image: url('../assets/images/1.svg');
+  }
+}
+
+/* About Section */
+.about-section {
+  display: flex; /* Flexbox for centering */
+  flex-direction: column; /* Arrange elements vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  padding: 100px 20px; /* Spacing around the section */
+  text-align: center; /* Center align text */
+  background-color: #fff; /* Subtle background color */
+  color: #000; /* Ensure text is readable */
+  font-family: 'Crimson Text', serif;
+  min-height: 400px; /* Ensure enough height for centering */
+}
+
+.about-section h2 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 800px; /* Limit text width for readability */
+  margin: 0 auto 30px; /* Center text and add spacing below */
+}
+
+.reserve-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: 'Cinzel', serif;
+  color: #fff;
+  background-color: #72383d;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none;
+}
+
+.reserve-btn:hover {
+  background-color: #cda15b;
+  color: #000;
+}
+
+
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+
+.content h1 {
+  color: #fff;
+  font-size: 60px;
+  letter-spacing: 15px;
+}
+
+.content h1 span {
+  color: #111;
+}
+
+.content a {
+  background: #85c1ee;
+  padding: 10px 24px;
+  text-decoration: none;
+  font-size: 18px;
+  border-radius: 20px;
+  transition: background 0.3s;
+}
+
+.content a:hover {
+  background: #034e88;
+  color: #fff;
+}
+
+/* Centered Image */
+.centered-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+  z-index: 3;
+  opacity: 0;
+  animation: fadeInImage 0.5s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeInImage {
+  from {
+      opacity: 0;
+  }
+  to {
+      opacity: 1;
+  }
+}
+
+
+/* Chef Section */
+.chef-section {
+  display: flex;
+  align-items: center;
+  padding: 100px;
+  background-color: #fff;
+}
+
+.chef-image img {
+  width: 500px;
+  height: auto;
+  margin-left: 100px;
+}
+
+.chef-details {
+  flex-grow: 1;
+}
+
+.chef-details h2 {
+  font-size: 24px;
+  margin: 0;
+  text-align: center;
+}
+
+.chef-details p {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.read-more-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background-color: #cda15b;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.5s;
+}
+
+.read-more-btn:hover {
+  background-color: black;
+}
+
+
+@media screen and (max-width: 600px) {
+    /* Apply this style when the screen width is less than or equal to 600px */
+    .footer-logo {
+      float: none; /* Remove the float property */
+      display: block; /* Make the logo a block element */
+      margin-left: auto; /* Center the logo horizontally */
+      margin-right: auto;
+    }
+  }
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .bodyn {
+    background-color: fff;
+    margin: 0;
+    padding: 0;
+    /* font-family: Arial, sans-serif; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    font-family: 'Crimson Text', serif;
+    scroll-behavior: smooth;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-box {
+    position: relative;
+    width: 30%;
+    height: auto;
+    text-align: center;
+    transition: transform 0.2s;
+    margin: 85px;
+}
+
+.image-box:hover {
+    transform: scale(1.05);
+}
+
+.image-box img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    ;
+    transition: filter 0.2s;
+}
+
+.image-box:hover img {
+  filter: grayscale(10%);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.image-box:hover .overlay {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+
+
+.image-box:hover .overlay-text {
+    color: #af9b04;
+}
+
+
+
+
+
+.second-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.image-box:hover .second-image {
+    display: block;
+}
+
+header {
+    background-color: goldendark;
+    text-align: center;
+    padding: 20px;
+    font-family: 'Crimson Text', serif;
+}
+
+
+#map {
+  width: 100%;
+  height: 400px;
+}
+
+
+
+footer {
+  /* background-color: #f9f8f8;  */
+  background-color: #EFE9E1; 
+  color: #000000;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.footer-logo {
+  float: left;
+  margin-bottom: 10px;
+  margin-left: 60px;
+}
+
+.footer-info {
+  text-align: left;
+}
+
+.footer-info p {
+  margin: 5px 0;
+}
+
+.footer-info div {
+  display: inline-block;
+  margin: 60px; /* Reduce the left margin to move sections to the left */
+  vertical-align: top;
+}
+
+.info-title {
+  font-size: 18px; /* Larger font size for titles */
+  font-weight: bold; /* Make the title text bold */
+}
+
+.info-title + p {
+  margin-top: 10px; /* Add margin to create a gap between title and paragraph */
+}
+
+.social-icons img {
+  margin-right: 10px;
+}
+.social-icons {
+  margin: 20px;
+}
+
+/* Use media queries to make the layout responsive */
+
+@media screen and (max-width: 800px) { /* Apply this style when the screen width is less than or equal to 800px */
+  .footer-info div {
+      display: block; /* Stack the divs vertically */
+      margin: 0 auto; /* Center the divs horizontally */
+      max-width: 300px; /* Limit the width of the divs */
+  }
+}
+
+@media screen and (max-width: 600px) { /* Apply this style when the screen width is less than or equal to 600px */
+  .footer-logo {
+      float: none; /* Remove the float property */
+      display: block; /* Make the logo a block element */
+      margin-left: auto; /* Center the logo horizontally */
+      margin-right: auto;
+  }
+}
+/* Define the animation */
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      transform: translateY(20px); /* Start slightly below */
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0); /* End at original position */
+  }
+}
+
+/* Class to apply the animation */
+.animate {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate.animate-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Auth Nav Buttons (added for login/logout) ──────────── */
+.nav-auth-area {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-right: 80px;
+}
+
+.nav-login-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    padding: 9px 22px;
+    background: transparent;
+    color: #72383d;
+    border: 1.5px solid #72383d;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+    white-space: nowrap;
+}
+.nav-login-btn:hover { background: #72383d; color: #fff; transform: translateY(-1px); }
+
+.nav-logout-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    padding: 8px 18px;
+    background: transparent;
+    color: #72383d;
+    border: 1.5px solid #72383d;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+.nav-logout-btn:hover { background: #72383d; color: #fff; }

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/confirmation.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <title>Reservation Confirmed – Mealea</title>
+</head>
+
+<body>
+<div class="page-container">
+
+<!-- HEADER -->
+<header class="header">
+    <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo">
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="reservation.html">Reservation</a>
+    </nav>
+    <div class="nav-auth-area">
+        <div id="nav-user-info" style="display:none; align-items:center; gap:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#72383d;">
+            <span>👤 <span id="nav-username"></span></span>
+            <button onclick="handleLogout()" class="nav-logout-btn">Sign Out</button>
+        </div>
+        <a href="login.html" id="nav-login-btn" class="nav-login-btn">Sign In</a>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook Icon"></a>
+            <a href="https://instagram.com/aupp.edu.kh"><img src="../assets/images/ig.png" alt="Instagram Icon"></a>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN -->
+<main class="confirm-main">
+
+    <!-- ══ LEFT — Confirmation Message + Experience Card ══ -->
+    <div class="confirm-left">
+
+        <!-- Tick icon -->
+        <div class="tick-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+        </div>
+
+        <!-- Heading -->
+        <div>
+            <h1 class="confirm-heading">Reservation<br>Confirmed!</h1>
+            <p class="confirm-sub" style="margin-top:14px;">
+                A table is set for your arrival. We look forward to hosting you for an unforgettable evening.
+            </p>
+            <p class="confirm-user" style="margin-top:12px;">Booked by <span id="user-name-display">Guest</span></p>
+        </div>
+
+        <!-- Experience Card -->
+        <!-- <div class="experience-card">
+            <div>
+                <span class="exp-label">Your Experience</span>
+                <div class="exp-title">Mealea</div>
+            </div>
+            <div class="exp-subtitle" id="exp-bottom">Fine Dining · Phnom Penh</div>
+        </div> -->
+
+        <!-- Action Buttons -->
+        <div class="action-btns">
+            <button class="btn-primary" onclick="addToCalendar()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Add to Calendar
+            </button>
+            <button class="btn-secondary" onclick="goHome()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                Back to Home
+            </button>
+        </div>
+
+        <p class="email-note">A confirmation has been sent to your inbox.</p>
+
+    </div>
+
+    <!-- ══ RIGHT — Review Details Card ══ -->
+    <div class="confirm-right">
+        <div class="review-card">
+
+            <!-- Card Header -->
+            <div class="review-header">
+                <div class="review-header-top">
+                    <a class="back-btn" onclick="goBack()">&#8592;</a>
+                    <div class="review-title-text">
+                        <h2>Review Details</h2>
+                        <p>Please confirm your reservation details below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Restaurant Photo -->
+            <div class="restaurant-photo">
+                <img src="../assets/images/img1.png" alt="Mealea Restaurant"
+                     onerror="this.style.display='none'">
+                <div class="photo-overlay">
+                    <div class="photo-restaurant-name">Mealea Restaurant</div>
+                    <div class="photo-restaurant-tag">Fine Dining &amp; Khmer Cuisine</div>
+                </div>
+            </div>
+
+            <!-- Details Body -->
+            <div class="details-body">
+
+                <!-- Reservation ID Badge -->
+                <div class="res-id-badge">
+                    <span>Reservation</span>
+                    <span id="res-id">RSV—</span>
+                </div>
+
+                <!-- 2×2 Grid -->
+                <div class="details-grid">
+                    <div class="detail-field">
+                        <label>Date</label>
+                        <div class="detail-value">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span id="c-date">—</span>
+                        </div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Time</label>
+                        <div class="detail-value">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span id="c-time">—</span>
+                        </div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Party Size</label>
+                        <div class="detail-value">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span id="c-guests">—</span>
+                        </div>
+                    </div>
+                    <div class="detail-field">
+                        <label>Dining Area</label>
+                        <div class="detail-value">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                            <span>Main Salon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Preference -->
+                <div class="pref-box">
+                    <label>Table Preference</label>
+                    <p class="pref-text" id="c-pref">"Near the window for a pleasant dining atmosphere."</p>
+                </div>
+
+                <!-- Cancellation Policy -->
+                <div class="cancel-policy">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <p>
+                        <strong>Cancellation Policy</strong>
+                        Cancellations must be made at least 24 hours in advance.
+                        No-shows or late cancellations will incur a fee of $25 per guest.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">
+        <img src="../assets/images/logo.png" height="100">
+        <div class="social-icons" style="margin-left:0; margin-top:8px;">
+            <img src="../assets/images/fb.png" height="24">
+            <img src="../assets/images/ig.png" height="24">
+        </div>
+    </div>
+    <div class="footer-info">
+        <div>
+            <p class="info-title">Opening Hours</p>
+            <p>Lunch: 11:30 AM – 2:00 PM</p>
+            <p>Dinner: 5:30 PM – 10:00 PM</p>
+        </div>
+        <div>
+            <p class="info-title">Contact</p>
+            <p>Phone: (123) 456-7890</p>
+            <p>Email: mealea@gmail.com</p>
+        </div>
+    </div>
+    <div class="copyright">© 2024 Mealea. All rights reserved.</div>
+</footer>
+
+</div>
+
+<script>
+// ── Auth ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    const user = sessionStorage.getItem('mealea_user');
+    if (user) {
+        const parsedUser = JSON.parse(user);
+        document.getElementById('nav-user-info').style.display = 'flex';
+        document.getElementById('nav-username').textContent  = parsedUser.name;
+        document.getElementById('nav-login-btn').style.display = 'none';
+        document.getElementById('user-name-display').textContent = parsedUser.name;
+    }
+});
+
+function handleLogout() {
+    sessionStorage.removeItem('mealea_user');
+    window.location.href = 'login.html';
+}
+
+// ── Load reservation data ─────────────────────────
+const data  = JSON.parse(localStorage.getItem('mealea_reservation') || '{}');
+const resId = "RSV" + Math.floor(Math.random() * 9000 + 1000);
+
+document.getElementById('res-id').textContent    = resId;
+document.getElementById('c-date').textContent    = data.date    || '—';
+document.getElementById('c-time').textContent    = data.time    || '—';
+document.getElementById('c-guests').textContent  = data.guests
+    ? data.guests + (data.guests === 1 ? ' Guest' : ' Guests')
+    : '—';
+
+// Update experience card bottom with date/time if available
+if (data.date && data.time) {
+    document.getElementById('exp-bottom').textContent =
+        data.date + ' · ' + data.time;
+}
+
+// ── Buttons ───────────────────────────────────────
+function goHome()  { window.location.href = "home.html"; }
+function goBack()  { window.history.back(); }
+
+function addToCalendar() {
+    if (!data.date || !data.time) {
+        alert('No reservation data found.');
+        return;
+    }
+    // Build a basic Google Calendar URL
+    const dateStr  = data.date.replace(/-/g, '');
+    const timeParts = data.time.split(':');
+    const startHour = parseInt(timeParts[0]).toString().padStart(2,'0');
+    const startMin  = (timeParts[1] || '00').padStart(2,'0');
+    const startDT   = dateStr + 'T' + startHour + startMin + '00';
+    // Add 2 hours for end time
+    const endHour   = (parseInt(startHour) + 2).toString().padStart(2,'0');
+    const endDT     = dateStr + 'T' + endHour + startMin + '00';
+    const calUrl = `https://www.google.com/calendar/render?action=TEMPLATE`
+        + `&text=Mealea+Restaurant+Reservation`
+        + `&dates=${startDT}/${endDT}`
+        + `&details=Reservation+${resId}+for+${data.guests}+guest(s)`
+        + `&location=Mealea+Restaurant,+Phnom+Penh`;
+    window.open(calUrl, '_blank');
+}
+</script>
+
+</body>
+</html>

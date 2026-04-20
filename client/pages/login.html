@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login – Mealea Restaurant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+
+    <!-- Split layout -->
+    <div class="auth-wrapper">
+
+        <!-- LEFT PANEL: decorative brand side -->
+        <div class="auth-brand">
+            <div class="brand-overlay"></div>
+            <div class="brand-content">
+                <img src="../assets/images/logowhite.png" alt="Mealea Logo" class="brand-logo" onerror="this.style.display='none'">
+                <h1 class="brand-name">មាលា</h1>
+                <p class="brand-tagline">KHMER AUTHENTIC RESTAURANT</p>
+                <div class="brand-divider"></div>
+                <p class="brand-quote">"In every dish, there lies<br>a story waiting to be savored."</p>
+                <p class="brand-attr">— Chef Sok Sabay</p>
+            </div>
+            <!-- Decorative petals -->
+            <div class="petal p1"></div>
+            <div class="petal p2"></div>
+            <div class="petal p3"></div>
+        </div>
+
+        <!-- RIGHT PANEL: form -->
+        <div class="auth-form-side">
+            <div class="auth-card">
+
+                <a href="index.html" class="back-link">← Back to Home</a>
+
+                <div class="auth-card-header">
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to manage your reservations &amp; orders</p>
+                </div>
+
+                <div id="login-error" class="auth-alert hidden">
+                    ⚠️ Incorrect email or password. Please try again.
+                </div>
+
+                <div class="auth-field">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">✉</span>
+                        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="auth-field">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+                        <button class="toggle-pass" onclick="togglePassword('password', this)" type="button">Show</button>
+                    </div>
+                </div>
+
+                <div class="auth-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember"> Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot password?</a>
+                </div>
+
+                <button class="auth-btn" onclick="handleLogin()">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-arrow">→</span>
+                </button>
+
+                <div class="auth-divider"><span>or</span></div>
+
+                <div class="social-auth">
+                    <button class="social-btn" onclick="socialLogin('Google')">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                        Continue with Google
+                    </button>
+                    <button class="social-btn" onclick="socialLogin('Facebook')">
+                        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                        Continue with Facebook
+                    </button>
+                </div>
+
+                <p class="auth-switch">
+                    Don't have an account? <a href="register.html">Create one →</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+<script>
+    const DEMO_USER = { email: 'guest@mealea.com', password: 'mealea123', name: 'Guest User' };
+
+    function handleLogin() {
+        const email    = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const error    = document.getElementById('login-error');
+        const btn      = document.querySelector('.auth-btn');
+
+        if (!email || !password) {
+            error.textContent = '⚠️ Please enter your email and password.';
+            error.classList.remove('hidden');
+            return;
+        }
+
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        setTimeout(() => {
+            if (email === DEMO_USER.email && password === DEMO_USER.password) {
+                sessionStorage.setItem('mealea_user', JSON.stringify({ name: DEMO_USER.name, email }));
+                error.classList.add('hidden');
+                btn.querySelector('.btn-text').textContent = '✓ Signing in…';
+                setTimeout(() => { window.location.href = 'home.html'; }, 700);
+            } else {
+                error.textContent = '⚠️ Incorrect email or password. Try guest@mealea.com / mealea123';
+                error.classList.remove('hidden');
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                document.querySelector('.auth-card').classList.add('shake');
+                setTimeout(() => document.querySelector('.auth-card').classList.remove('shake'), 500);
+            }
+        }, 900);
+    }
+
+    function togglePassword(id, btn) {
+        const input = document.getElementById(id);
+        if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+        else                           { input.type = 'password'; btn.textContent = 'Show'; }
+    }
+
+    function socialLogin(provider) {
+        sessionStorage.setItem('mealea_user', JSON.stringify({ name: provider + ' User', email: 'social@mealea.com' }));
+        window.location.href = 'home.html';
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+
+    if (sessionStorage.getItem('mealea_user')) window.location.href = 'home.html';
+</script>
+</body>
+</html>
