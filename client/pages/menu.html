@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu — Mealea Restaurant</title>
+
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Moulpali&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/menu.css">
+
+  <!-- jQuery (for toast timing) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo" />
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="menu.html" style="color: var(--gold);">Menu</a>
+      <a href="reservation.html">Reservation</a>
+    </nav>
+    <div class="nav-right">
+      <div class="social-icons">
+        <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram" /></a>
+      </div>
+      <a href="cart.html" class="cart-btn" id="cartBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-btn-label">Cart</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ── HERO ── -->
+  <div class="menu-hero">
+    <h1>OUR MENU</h1>
+    <p>Authentic Khmer flavours, thoughtfully prepared</p>
+  </div>
+
+  <!-- ── CATEGORY TABS ── -->
+  <nav class="category-nav">
+    <a href="#all-menu"        class="cat-tab active" data-section="all-menu">All</a>
+    <a href="#appetizer-menu" class="cat-tab active" data-section="appetizer-menu">Appetizers</a>
+    <a href="#main-menu"      class="cat-tab"        data-section="main-menu">Main Dishes</a>
+    <a href="#dessert-menu"   class="cat-tab"        data-section="dessert-menu">Desserts</a>
+    <a href="#takeout-menu"   class="cat-tab"        data-section="takeout-menu">Takeout</a>
+    <a href="#drink-menu"     class="cat-tab"        data-section="drink-menu">Drinks & Beverages</a>
+  </nav>
+
+
+  <!-- ── ALL ITEMS ── -->
+  <section class="menu-section" id="all-menu">
+    <div class="section-header">
+      <h2>ALL ITEMS</h2>
+      <p>View everything we offer</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-all"></div>
+  </section>
+
+  <hr class="section-sep" />
+
+
+
+  <!-- ── APPETIZERS ── -->
+  <section class="menu-section" id="appetizer-menu">
+    <div class="section-header">
+      <h2>APPETIZERS</h2>
+      <p>Small bites to start your journey</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-appetizer"></div>
+  </section>
+
+  <hr class="section-sep" />
+
+  <!-- ── MAIN DISHES ── -->
+  <section class="menu-section" id="main-menu">
+    <div class="section-header">
+      <h2>MAIN DISHES</h2>
+      <p>The heart of Khmer culinary tradition</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-main"></div>
+  </section>
+
+  <hr class="section-sep" />
+
+  <!-- ── DESSERTS ── -->
+  <section class="menu-section" id="dessert-menu">
+    <div class="section-header">
+      <h2>DESSERTS</h2>
+      <p>Sweet endings to a perfect meal</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-dessert"></div>
+  </section>
+
+  <!-- ── TAKEOUT ── -->
+  <section class="menu-section" id="takeout-menu">
+    <div class="section-header">
+      <h2>TAKEOUT</h2>
+      <p>Take home the full flavor and freshness of our kitchen</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-takeout"></div>
+  </section>
+
+  <hr class="section-sep" />
+  
+  <!-- ── DRINKS ── -->
+  <section class="menu-section" id="drink-menu">
+    <div class="section-header">
+      <h2>Drink</h2>
+      <p>Refreshing drinks to complete your Mealea dining journey</p>
+      <div class="section-divider"></div>
+    </div>
+    <div class="menu-grid" id="grid-drink"></div>
+  </section>
+
+  <hr class="section-sep" />
+
+  <!-- ── TOAST ── -->
+  <div id="toast"></div>
+
+      <footer>
+        <div class="footer-top">
+            <!-- Footer Logo and Social Icons -->
+            <div class="footer-logo">
+                <img src="../assets/images/logo.png" alt="Company Logo" height="100" />
+            </div>
+
+            <!-- Footer Info -->
+            <div class="footer-info">
+                <div>
+                    <div class="info-title">Opening Hours</div>
+                    <p>Lunch Service: 11:30 AM - 2:00 PM</p>
+                    <p>Dinner Service: 5:30 PM - 10:00 PM</p>
+                </div>
+
+                <div>
+                    <p class="info-title">Contact</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <p>Email: mealea@gmail.com</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Copyright -->
+        <hr class="footer-divider"/>
+        <p class="footer-copyright">© 2024 Mealea. All rights reserved.</p>
+    </footer>
+
+
+  <!-- JS -->
+  <script src="../js/menu.js"></script>
+  <script src="../js/cart.js"></script>
+</body>
+</html>

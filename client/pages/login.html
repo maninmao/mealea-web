@@ -34,7 +34,7 @@
         <div class="auth-form-side">
             <div class="auth-card">
 
-                <a href="index.html" class="back-link">← Back to Home</a>
+                <a href="../pages/index.html" class="back-link">← Back to Home</a>
 
                 <div class="auth-card-header">
                     <h2>Welcome Back</h2>
@@ -118,7 +118,7 @@
                 sessionStorage.setItem('mealea_user', JSON.stringify({ name: DEMO_USER.name, email }));
                 error.classList.add('hidden');
                 btn.querySelector('.btn-text').textContent = '✓ Signing in…';
-                setTimeout(() => { window.location.href = 'home.html'; }, 700);
+                setTimeout(() => { window.location.href = 'index.html'; }, 700);
             } else {
                 error.textContent = '⚠️ Incorrect email or password. Try guest@mealea.com / mealea123';
                 error.classList.remove('hidden');
@@ -138,12 +138,12 @@
 
     function socialLogin(provider) {
         sessionStorage.setItem('mealea_user', JSON.stringify({ name: provider + ' User', email: 'social@mealea.com' }));
-        window.location.href = 'home.html';
+        window.location.href = 'index.html';
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
 
-    if (sessionStorage.getItem('mealea_user')) window.location.href = 'home.html';
+    if (sessionStorage.getItem('mealea_user')) window.location.href = 'index.html';
 </script>
 </body>
 </html>

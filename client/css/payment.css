@@ -1,0 +1,283 @@
+/* payment.css — styles for payment.html only */
+
+.page-hero {
+  background-color: var(--cream);
+  text-align: center;
+  padding: 60px 20px 40px;
+  border-bottom: 1px solid #ddd6ce;
+}
+
+.page-hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: 44px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.15em;
+}
+
+.page-hero p { font-size: 18px; font-style: italic; color: var(--muted); margin-top: 8px; }
+
+/* ── PROGRESS STEPS ── */
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  padding: 24px 20px;
+  background: #fff;
+  border-bottom: 1px solid #e8e1d9;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #bbb;
+}
+
+.step.done  { color: #4caf50; }
+.step.active { color: var(--red); }
+
+.step-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step.done .step-circle { background: #4caf50; border-color: #4caf50; color: #fff; }
+.step.active .step-circle { background: var(--red); border-color: var(--red); color: #fff; }
+
+.step-line {
+  width: 60px;
+  height: 2px;
+  background: #e0d8d0;
+  margin: 0 8px;
+}
+
+.step-line.done { background: #4caf50; }
+
+/* ── LAYOUT ── */
+.payment-layout {
+  max-width: 1050px;
+  margin: 50px auto 0;
+  padding: 0 30px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 36px;
+  align-items: start;
+}
+
+/* ── FORM PANEL ── */
+.form-panel {
+  background: #fff;
+  border-radius: 14px;
+  padding: 36px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+
+.form-panel h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 24px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--cream);
+}
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  border: 1px solid #ddd6ce;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-family: 'Crimson Text', serif;
+  font-size: 16px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  background: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus { border-color: var(--red); }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ── PAYMENT METHOD RADIOS ── */
+.pay-methods {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.pay-option {
+  flex: 1;
+  border: 2px solid #ddd6ce;
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pay-option:has(input:checked) { border-color: var(--red); background: #fdf8f8; }
+
+.pay-option input[type="radio"] { accent-color: var(--red); width: 16px; height: 16px; }
+
+.pay-option-label {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.pay-option-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* ── CARD FIELDS ── */
+#cardFields {
+  background: var(--light);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #e8e1d9;
+}
+
+#cardFields .form-group:last-child { margin-bottom: 0; }
+
+/* ── SECTION DIVIDER ── */
+.form-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.08em;
+  margin: 28px 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e8e1d9;
+}
+
+/* ── SUBMIT BUTTON ── */
+.pay-btn {
+  width: 100%;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 8px;
+}
+
+.pay-btn:hover { background: var(--gold); }
+
+/* ── ORDER SUMMARY PANEL ── */
+.summary-panel {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px 24px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  position: sticky;
+  top: 120px;
+}
+
+.summary-panel h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--cream);
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0ebe4;
+}
+
+.summary-item img { width: 52px; height: 52px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+
+.summary-item-info { flex: 1; }
+
+.summary-item-name { font-family: 'Cinzel', serif; font-size: 13px; font-weight: 700; color: var(--dark); display: block; }
+
+.summary-item-qty { font-size: 13px; color: var(--muted); }
+
+.summary-item-price { font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; color: var(--red); flex-shrink: 0; }
+
+#orderTotal { margin-top: 16px; }
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  padding: 6px 0;
+  color: var(--text);
+}
+
+.total-row.grand {
+  font-family: 'Cinzel', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dark);
+  border-top: 2px solid var(--cream);
+  margin-top: 8px;
+  padding-top: 12px;
+}
+
+.total-row.grand span:last-child { color: var(--red); }
+
+.edit-cart-link {
+  display: block;
+  text-align: center;
+  margin-top: 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+}
+
+.edit-cart-link:hover { color: var(--gold); }
+
+@media (max-width: 768px) {
+  .payment-layout { grid-template-columns: 1fr; padding: 0 16px; margin-top: 30px; }
+  .summary-panel { position: static; }
+  .form-row { grid-template-columns: 1fr; }
+  .pay-methods { flex-direction: column; }
+}

@@ -1,3 +1,15 @@
+
+:root {
+  --red:   #72383D;
+  --gold:  #cda15b;
+  --cream: #EFE9E1;
+  --dark:  #1a1a1a;
+  --text:  #2c2c2c;
+  --light: #faf8f5;
+  --muted: #7a6a5a;
+}
+
+
 /* Global Styles */
  body {
   margin: 0;
@@ -546,3 +558,86 @@ footer {
     white-space: nowrap;
 }
 .nav-logout-btn:hover { background: #72383d; color: #fff; }
+
+/* Menu Section Styling */
+.menu-section {
+  margin: 0;
+  background-size: cover;
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.menu-title {
+    font-family: 'Cinzel', serif;
+    font-size: 36px;
+    color: rgb(23, 23, 22);
+    margin-bottom: 20px;
+}
+
+.recommendation-title {
+    font-family: 'Crimson Text', serif;
+    font-size: 20px;
+    color: rgb(77, 77, 77);
+    margin-bottom: 40px;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 0 20px;
+}
+
+.menu-item {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.menu-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+}
+
+.menu-item:hover .menu-image {
+    transform: scale(1.1);
+}
+
+.menu-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.menu-item:hover .menu-overlay {
+    opacity: 1;
+}
+
+.menu-category {
+    font-family: 'Moulpali', serif;
+    font-size: 24px;
+    color: #fff;
+    text-transform: uppercase;
+    text-align: center;
+}

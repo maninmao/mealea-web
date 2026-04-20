@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart — Mealea Restaurant</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles1.css">
+  <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body>
+
+  <header class="header">
+    <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo" />
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="reservation.html">Reservation</a>
+    </nav>
+    <div class="nav-right">
+      <div class="social-icons">
+        <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook" /></a>
+        <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram" /></a>
+      </div>
+      <a href="cart.html" class="cart-btn active-page">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+        <span class="cart-btn-label">Cart</span>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <h1>YOUR CART</h1>
+    <p>Review your order before checking out</p>
+  </div>
+
+  <main class="cart-layout" id="cartLayout">
+    <!-- Rendered by cart-page.js -->
+  </main>
+
+  <div id="toast"></div>
+
+  <footer>
+        <div class="footer-top">
+            <!-- Footer Logo and Social Icons -->
+            <div class="footer-logo">
+                <img src="../assets/images/logo.png" alt="Company Logo" height="100" />
+            </div>
+
+            <!-- Footer Info -->
+            <div class="footer-info">
+                <div>
+                    <div class="info-title">Opening Hours</div>
+                    <p>Lunch Service: 11:30 AM - 2:00 PM</p>
+                    <p>Dinner Service: 5:30 PM - 10:00 PM</p>
+                </div>
+
+                <div>
+                    <p class="info-title">Contact</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <p>Email: mealea@gmail.com</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Copyright -->
+        <hr class="footer-divider"/>
+        <p class="footer-copyright">© 2024 Mealea. All rights reserved.</p>
+    </footer>
+  <script src="../js/cart.js"></script>
+
+</body>
+</html>

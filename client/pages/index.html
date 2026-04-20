@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Ubuntu:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lora&family=Moulpali&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
-    <link rel="stylesheet" href="../css/menu-course.css">
+    <link rel="stylesheet" href="../css/menu.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 
@@ -17,9 +17,10 @@
     <header class="header">
         <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo" />
         <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="menu.html#all-menu">Menu</a>
-            <a href="reservation.html">Reservation</a>
+            <a href="../pages/index.html">Home</a>
+            <!-- <a href="#" onclick="scrollToSection('menu-section')">Menu</a> -->
+             <a href="../pages/menu.html" onclick="scrollToSection('menu.html')">Menu</a>
+            <a href="../pages/reservation.html">Reservation</a>
         </nav>
         <div class="nav-auth-area">
             <div id="nav-user-info" style="display:none; align-items:center; gap:10px; font-family:'Cinzel',serif; font-size:13px; color:#72383d;">
@@ -27,29 +28,11 @@
                 <button onclick="handleLogout()" class="nav-logout-btn">Sign Out</button>
             </div>
             <a href="login.html" id="nav-login-btn" class="nav-login-btn">Sign In</a>
-            <div class="social-icons">
-                <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook Icon" /></a>
-                <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram Icon" /></a>
-            </div>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook Icon" /></a>
+            <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram Icon" /></a>
         </div>
     </header>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = sessionStorage.getItem('mealea_user');
-            if (user) {
-                const parsedUser = JSON.parse(user);
-                document.getElementById('nav-user-info').style.display = 'flex';
-                document.getElementById('nav-username').textContent = parsedUser.name;
-                document.getElementById('nav-login-btn').style.display = 'none';
-            }
-        });
-
-        function handleLogout() {
-            sessionStorage.removeItem('mealea_user');
-            window.location.href = 'login.html';
-        }
-    </script>
 
     <div class="Section_top">
         <div class="content">
@@ -61,26 +44,28 @@
         <img src="../assets/images/1.svg" class="slideshow-image" alt="Slide 1">
     </div>
 
-    <script>
+    <script> 
         const images = [
             '../assets/images/1.svg',
             '../assets/images/2.svg',
             '../assets/images/3.svg',
             '../assets/images/4.svg'
         ];
-
+        
         let currentIndex = 0;
         const slideshowElement = document.querySelector('.slideshow-image');
 
         if (!slideshowElement) {
             console.error("Slideshow image element not found!");
-        } else {
-            function updateSlideshow() {
-                currentIndex = (currentIndex + 1) % images.length;
-                slideshowElement.src = images[currentIndex];
-            }
-            setInterval(updateSlideshow, 3000);
+            return;
         }
+        function updateSlideshow() {
+            currentIndex = (currentIndex + 1) % images.length;
+            slideshowElement.src = images[currentIndex];
+        }
+        setInterval(updateSlideshow, 3000);
+        
+
     </script>
 
     <div class="about-section animate">
@@ -94,7 +79,7 @@
                 By elegantly elevating traditional Cambodian dishes, Mealea offers patrons an unforgettable gastronomic experience filled with aromatic spices and local ingredients.<br>
                 The restaurant's ambiance, combined with its meticulous presentation of dishes, transports diners to a world of Khmer culinary excellence.
             </p>
-            <a href="reservation.html">
+            <a href="../pages/reservation.html">
                 <button class="reserve-btn">RESERVE NOW</button>
             </a>
         </div>
@@ -117,7 +102,7 @@
         </div>
     </section>
 
-    <section class="menu-section" id="menu-section">
+     <section class="menu-section" id="menu-section">
         <header>
             <h1 class="menu-title animate">MEALEA</h1>
             <blockquote>
@@ -128,7 +113,7 @@
             <!-- Menu Item 1 -->
             <div class="menu-item">
                 <a href="menu.html#appetizer-menu">
-                    <img src="../assets/images/pic2.jpg" alt="Appetizers" class="menu-image">
+                    <img src="../assets/images/appetizer.png" alt="Appetizers" class="menu-image">
                     <div class="menu-overlay">
                         <p class="menu-category">Appetizers</p>
                     </div>
@@ -137,16 +122,15 @@
             <!-- Menu Item 2 -->
             <div class="menu-item">
                 <a href="menu.html#main-menu">
-                    <img src="../assets/images/pic3.jpg" alt="Main Dishes" class="menu-image">
+                    <img src="../assets/images/maindish.png" alt="Main Dishes" class="menu-image">
                     <div class="menu-overlay">
                         <p class="menu-category">Main Dishes</p>
                     </div>
                 </a>
             </div>
-            <!-- Menu Item 3 -->
             <div class="menu-item">
                 <a href="menu.html#dessert-menu">
-                    <img src="../assets/images/pic4.jpg" alt="Desserts" class="menu-image">
+                    <img src="../assets/images/dessert.png" alt="Desserts" class="menu-image">
                     <div class="menu-overlay">
                         <p class="menu-category">Desserts</p>
                     </div>
@@ -154,85 +138,96 @@
             </div>
         </div>
     </section>
-
     <section class="map-section">
         <div id="map" style="height: 400px;"></div>
 
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <script>
-            const accessKey = '';
-            const latitude  = 11.616283834122488;
-            const longitude = 104.90170744264711;
+  <script>
+    const accessKey = ''; 
+    const latitude = 11.616283834122488;   
+    const longitude = 104.90170744264711;
 
-            function initMap(lat, lng) {
-                const map = L.map('map').setView([lat, lng], 14);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
-                L.marker([lat, lng]).addTo(map)
-                    .bindPopup('Mealea Restaurant')
-                    .openPopup();
+    function initMap(latitude, longitude) {
+        // Initialize the map
+        const map = L.map('map').setView([latitude, longitude], 14); // 14 is the zoom level
+
+        // Add tile layer to the map (use an OpenStreetMap layer for example)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Add a marker at the given latitude and longitude
+        L.marker([latitude, longitude]).addTo(map)
+            .bindPopup('Mealea Restaurant')
+            .openPopup();
+    }
+
+    function getLocationByCoordinates() {
+        $.ajax({
+            url: `https://api.positionstack.com/v1/reverse`,
+            method: 'GET',
+            data: {
+                access_key: accessKey,
+                query: `${latitude},${longitude}`,
+                limit: 1
+            },
+            success: function(data) {
+                console.log('API Response:', data);  // Log the full API response
+
+                if (data.data && data.data.length > 0) {
+                    const location = data.data[0];
+                    console.log(`Location: ${location.label}`);
+
+                    // Initialize the map with the fetched location coordinates
+                    initMap(latitude, longitude);
+                } else {
+                    console.error('No results found for the provided coordinates.');
+                    // Fallback map logic
+                    initMap(latitude, longitude);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+                // Fallback map logic
+                initMap(latitude, longitude);
             }
+        });
+    }
 
-            function getLocationByCoordinates() {
-                $.ajax({
-                    url: `https://api.positionstack.com/v1/reverse`,
-                    method: 'GET',
-                    data: {
-                        access_key: accessKey,
-                        query: `${latitude},${longitude}`,
-                        limit: 1
-                    },
-                    success: function(data) {
-                        console.log('API Response:', data);
-                        if (data.data && data.data.length > 0) {
-                            console.log(`Location: ${data.data[0].label}`);
-                        } else {
-                            console.error('No results found for the provided coordinates.');
-                        }
-                        initMap(latitude, longitude);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX Error:', error);
-                        initMap(latitude, longitude);
-                    }
-                });
-            }
-
-            $(document).ready(function() {
-                console.log('Document is ready');
-                getLocationByCoordinates();
-            });
-        </script>
+    $(document).ready(function() {
+        console.log('Document is ready');
+        getLocationByCoordinates();
+    });
+  </script>
     </section>
 
     <footer>
-        <div class="footer-container">
+        <div class="footer-top">
+            <!-- Footer Logo and Social Icons -->
             <div class="footer-logo">
                 <img src="../assets/images/logo.png" alt="Company Logo" height="100" />
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook Icon" /></a>
-                    <a href="https://instagram.com/aupp.edu.kh?igshid=MzMyNGUyNmU2YQ=="><img src="../assets/images/ig.png" alt="Instagram Icon" /></a>
-                </div>
             </div>
 
+            <!-- Footer Info -->
             <div class="footer-info">
                 <div>
-                    <p class="info-title">Opening Hours</p>
+                    <div class="info-title">Opening Hours</div>
                     <p>Lunch Service: 11:30 AM - 2:00 PM</p>
                     <p>Dinner Service: 5:30 PM - 10:00 PM</p>
                 </div>
+
                 <div>
                     <p class="info-title">Contact</p>
                     <p>Phone: (123) 456-7890</p>
                     <p>Email: mealea@gmail.com</p>
                 </div>
             </div>
+
         </div>
 
-        <div class="copyright">
-            <p>&copy; 2024 Mealea Restaurant</p>
-        </div>
+        <!-- Footer Copyright -->
+        <hr class="footer-divider"/>
+        <p class="footer-copyright">© 2024 Mealea. All rights reserved.</p>
     </footer>
 
     <script>
@@ -249,15 +244,16 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
                     if (entry.isIntersecting) {
+                        // Add a small delay to create a staggered effect
                         setTimeout(() => {
                             entry.target.classList.add('animate-visible');
-                        }, index * 200);
+                        }, index * 200); // 200ms between each element
                     } else {
                         entry.target.classList.remove('animate-visible');
                     }
                 });
             }, {
-                threshold: 0.30
+                threshold: 0.30 // Trigger when 10% of the element is visible
             });
 
             const animatedElements = document.querySelectorAll('.animate');
@@ -270,21 +266,27 @@
     <script>
         $(document).ready(function(){
             $(".menu-item").hover(
-                function() { $(this).find(".menu-category").css("color", "white"); },
-                function() { $(this).find(".menu-category").css("color", "black"); }
+                function() { // Mouse enters
+                    $(this).find(".menu-category").css("color", "white");
+                },
+                function() { // Mouse leaves
+                    $(this).find(".menu-category").css("color", "black");
+                }
             );
         });
     </script>
-
+    
     <script>
         $(document).ready(function(){
             $("a").click(function(event){
                 if (this.hash && this.pathname === window.location.pathname) {
+                    // Smooth scrolling for same-page links
                     event.preventDefault();
                     $('html, body').animate({
                         scrollTop: $(this.hash).offset().top
                     }, 800);
                 } else if (this.pathname !== window.location.pathname) {
+                    // Let external links behave as usual
                     window.location.href = this.href;
                 }
             });
