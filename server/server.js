@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 // Load env vars
 dotenv.config();
@@ -31,6 +32,14 @@ app.use('/api/auth', authRoutes);
 // Menu Routes
 app.use('/api/menu', menuRoutes);
 
+// Cart Routes
+app.use('/api/cart', cartRoutes);
+
+// Order Routes
+app.use('/api/orders', orderRoutes);
+
+// Reservation Routes
+app.use('/api/reservations', reservationRoutes);
 
 
 

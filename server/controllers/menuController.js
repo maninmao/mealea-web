@@ -20,7 +20,15 @@ exports.getMenuById = async (req, res) => {
 
 exports.createMenu = async (req, res) => {
     try {
-        const newMenu = await menuService.createMenu(req.body);
+        // Copy the body data
+        const menuData = { ...req.body };
+        
+        // If an image was uploaded, attach the Cloudinary URL to the data
+        if (req.file) {
+            menuData.imageUrl = req.file.path; 
+        }
+
+        const newMenu = await menuService.createMenu(menuData);
         res.status(201).json(newMenu);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -29,7 +37,14 @@ exports.createMenu = async (req, res) => {
 
 exports.updateMenu = async (req, res) => {
     try {
-        const updatedMenu = await menuService.updateMenu(req.params.id, req.body);
+        const updateData = { ...req.body };
+        
+        // If they uploaded a new image, update the URL. Otherwise, keep the old one.
+        if (req.file) {
+            updateData.imageUrl = req.file.path;
+        }
+
+        const updatedMenu = await menuService.updateMenu(req.params.id, updateData);
         res.status(200).json(updatedMenu);
     } catch (error) {
         res.status(400).json({ message: error.message });
