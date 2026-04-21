@@ -41,7 +41,7 @@
 
                 <div id="reg-error" class="auth-alert hidden"></div>
                 <div id="reg-success" class="auth-alert success hidden">
-                    ✓ Account created! Redirecting to login…
+                    ✓ Account created! Signing you in…
                 </div>
 
                 <div class="fields-row">
@@ -68,8 +68,9 @@
                     </div>
                 </div>
 
+                <!-- Phone is collected for UX but not sent to backend (not in User model) -->
                 <div class="auth-field">
-                    <label for="phone">Phone Number</label>
+                    <label for="phone">Phone Number <span style="font-weight:400;opacity:.6">(optional)</span></label>
                     <div class="input-wrap">
                         <span class="input-icon">📞</span>
                         <input type="tel" id="phone" placeholder="+855 012 345 678">
@@ -80,7 +81,8 @@
                     <label for="reg-password">Password</label>
                     <div class="input-wrap">
                         <span class="input-icon">🔒</span>
-                        <input type="password" id="reg-password" placeholder="Min. 8 characters" oninput="checkStrength(this.value)">
+                        <input type="password" id="reg-password" placeholder="Min. 8 characters"
+                               oninput="checkStrength(this.value)">
                         <button class="toggle-pass" onclick="togglePassword('reg-password', this)" type="button">Show</button>
                     </div>
                     <div class="strength-bar">
@@ -102,7 +104,7 @@
                     I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
                 </label>
 
-                <button class="auth-btn" onclick="handleRegister()">
+                <button class="auth-btn" id="registerBtn" onclick="handleRegister()">
                     <span class="btn-text">Create Account</span>
                     <span class="btn-arrow">→</span>
                 </button>
@@ -115,75 +117,93 @@
         </div>
     </div>
 
-<script>
-    function handleRegister() {
-        const first    = document.getElementById('first-name').value.trim();
-        const last     = document.getElementById('last-name').value.trim();
-        const email    = document.getElementById('reg-email').value.trim();
-        const phone    = document.getElementById('phone').value.trim();
-        const pass     = document.getElementById('reg-password').value;
-        const confirm  = document.getElementById('confirm-pass').value;
-        const terms    = document.getElementById('terms').checked;
-        const errEl    = document.getElementById('reg-error');
-        const btn      = document.querySelector('.auth-btn');
+    <!-- Load auth.js BEFORE inline script so register() is available -->
+    <script src="../js/auth.js"></script>
 
-        const showErr = msg => {
-            errEl.textContent = '⚠️ ' + msg;
-            errEl.classList.remove('hidden');
-            document.querySelector('.auth-card').classList.add('shake');
-            setTimeout(() => document.querySelector('.auth-card').classList.remove('shake'), 500);
-        };
+    <script>
+        // If already logged in, skip straight to home
+        if (getCurrentUser()) {
+            window.location.href = "index.html";
+        }
 
-        errEl.classList.add('hidden');
+        async function handleRegister() {
+            const first   = document.getElementById("first-name").value.trim();
+            const last    = document.getElementById("last-name").value.trim();
+            const email   = document.getElementById("reg-email").value.trim();
+            const pass    = document.getElementById("reg-password").value;
+            const confirm = document.getElementById("confirm-pass").value;
+            const terms   = document.getElementById("terms").checked;
+            const btn     = document.getElementById("registerBtn");
 
-        if (!first || !last)  { showErr('Please enter your full name.'); return; }
-        if (!email)           { showErr('Please enter a valid email address.'); return; }
-        if (!phone)           { showErr('Please enter your phone number.'); return; }
-        if (pass.length < 8)  { showErr('Password must be at least 8 characters.'); return; }
-        if (pass !== confirm) { showErr('Passwords do not match.'); return; }
-        if (!terms)           { showErr('Please accept the Terms of Service.'); return; }
+            // ── Client-side validation ────────────────────────────
+            if (!first || !last) { showErr("Please enter your full name.");         return; }
+            if (!email)          { showErr("Please enter a valid email address.");  return; }
+            if (pass.length < 8) { showErr("Password must be at least 8 characters."); return; }
+            if (pass !== confirm) { showErr("Passwords do not match.");             return; }
+            if (!terms)           { showErr("Please accept the Terms of Service."); return; }
 
-        btn.classList.add('loading');
-        btn.disabled = true;
+            // ── Loading state ─────────────────────────────────────
+            btn.classList.add("loading");
+            btn.disabled = true;
+            document.getElementById("reg-error").classList.add("hidden");
 
-        setTimeout(() => {
-            const user = { name: first + ' ' + last, email, phone };
-            localStorage.setItem('mealea_registered', JSON.stringify(user));
-            document.getElementById('reg-success').classList.remove('hidden');
-            setTimeout(() => { window.location.href = 'login.html'; }, 1800);
-        }, 1000);
-    }
+            // ── Call backend via auth.js ──────────────────────────
+            // Backend User model expects: name, email, password
+            const fullName = first + " " + last;
+            const result = await register(fullName, email, pass);
 
-    function togglePassword(id, btn) {
-        const input = document.getElementById(id);
-        if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
-        else                           { input.type = 'password'; btn.textContent = 'Show'; }
-    }
+            // register() redirects on success, so we only reach here on failure
+            if (result && result.error) {
+                showErr(result.error);
+                btn.classList.remove("loading");
+                btn.disabled = false;
+                document.querySelector(".auth-card").classList.add("shake");
+                setTimeout(() => document.querySelector(".auth-card").classList.remove("shake"), 500);
+            } else if (!result) {
+                // Shouldn't happen, but guard anyway
+                btn.classList.remove("loading");
+                btn.disabled = false;
+            }
+        }
 
-    function checkStrength(val) {
-        const fill  = document.getElementById('strength-fill');
-        const label = document.getElementById('strength-label');
-        let score = 0;
-        if (val.length >= 8)           score++;
-        if (/[A-Z]/.test(val))         score++;
-        if (/[0-9]/.test(val))         score++;
-        if (/[^A-Za-z0-9]/.test(val))  score++;
+        function showErr(msg) {
+            const el = document.getElementById("reg-error");
+            el.textContent = "⚠️ " + msg;
+            el.classList.remove("hidden");
+        }
 
-        const levels = [
-            { pct: '0%',   color: 'transparent', text: '' },
-            { pct: '25%',  color: '#e57373',      text: 'Weak' },
-            { pct: '50%',  color: '#ffb74d',      text: 'Fair' },
-            { pct: '75%',  color: '#81c784',      text: 'Good' },
-            { pct: '100%', color: '#4caf50',       text: 'Strong' },
-        ];
-        const l = levels[score] || levels[0];
-        fill.style.width      = l.pct;
-        fill.style.background = l.color;
-        label.textContent     = l.text;
-        label.style.color     = l.color;
-    }
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === "password") { input.type = "text";     btn.textContent = "Hide"; }
+            else                            { input.type = "password"; btn.textContent = "Show"; }
+        }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleRegister(); });
-</script>
+        function checkStrength(val) {
+            const fill  = document.getElementById("strength-fill");
+            const label = document.getElementById("strength-label");
+            let score = 0;
+            if (val.length >= 8)           score++;
+            if (/[A-Z]/.test(val))         score++;
+            if (/[0-9]/.test(val))         score++;
+            if (/[^A-Za-z0-9]/.test(val))  score++;
+
+            const levels = [
+                { pct: "0%",   color: "transparent", text: "" },
+                { pct: "25%",  color: "#e57373",      text: "Weak" },
+                { pct: "50%",  color: "#ffb74d",      text: "Fair" },
+                { pct: "75%",  color: "#81c784",      text: "Good" },
+                { pct: "100%", color: "#4caf50",      text: "Strong" }
+            ];
+            const l = levels[score] || levels[0];
+            fill.style.width      = l.pct;
+            fill.style.background = l.color;
+            label.textContent     = l.text;
+            label.style.color     = l.color;
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter") handleRegister();
+        });
+    </script>
 </body>
 </html>

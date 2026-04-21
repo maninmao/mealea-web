@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed – Mealea Restaurant</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --burgundy: #72383d;
+            --gold:     #b8960c;
+            --cream:    #fdf6ee;
+            --dark:     #2c1810;
+            --light-border: #e8d5c0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--cream);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 48px;
+            background: #fff;
+            border-bottom: 1px solid var(--light-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo { height: 52px; }
+        .nav-links { display: flex; gap: 28px; }
+        .nav-links a {
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            color: var(--dark);
+            opacity: 0.75;
+            transition: opacity 0.2s;
+        }
+        .nav-links a:hover { opacity: 1; }
+        .social-icons { display: flex; gap: 10px; }
+        .social-icons img { height: 20px; opacity: 0.7; }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+        }
+
+        .success-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 960px;
+            width: 100%;
+        }
+
+        .success-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 28px;
+        }
+
+        .tick-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(76,175,80,0.3);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        @keyframes popIn {
+            from { transform: scale(0); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        .tick-wrap svg { width: 32px; height: 32px; stroke: #fff; }
+
+        .success-heading {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(32px, 5vw, 48px);
+            line-height: 1.1;
+            color: var(--burgundy);
+        }
+
+        .success-sub {
+            font-family: 'Crimson Text', serif;
+            font-size: 18px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .status-msg {
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+            color: var(--burgundy);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .spinner {
+            width: 18px; height: 18px;
+            border: 2px solid var(--light-border);
+            border-top-color: var(--burgundy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .action-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--burgundy);
+            color: #fff;
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .btn-primary:hover { background: #5a2d31; }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--burgundy);
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            border: 1.5px solid var(--burgundy);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-secondary:hover { background: var(--burgundy); color: #fff; }
+
+        .email-note { font-size: 13px; color: #aaa; font-style: italic; }
+
+        .order-card {
+            background: #fff;
+            border: 1px solid var(--light-border);
+            border-radius: 2px;
+            overflow: hidden;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            animation: slideUp 0.4s ease 0.2s both;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .card-header {
+            background: var(--burgundy);
+            color: #fff;
+            padding: 20px 24px;
+        }
+        .card-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+        .order-id { font-size: 12px; opacity: 0.75; }
+
+        .card-body { padding: 24px; }
+
+        .order-items { margin-bottom: 20px; }
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--light-border);
+        }
+        .order-item:last-child { border-bottom: none; }
+        .order-item img {
+            width: 48px; height: 48px;
+            object-fit: cover;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .item-info { flex: 1; min-width: 0; }
+        .item-name {
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .item-qty { font-size: 12px; color: #999; margin-top: 2px; }
+        .item-price {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: var(--burgundy);
+            flex-shrink: 0;
+        }
+
+        .totals { border-top: 1px solid var(--light-border); padding-top: 16px; }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            padding: 4px 0;
+            color: #666;
+        }
+        .total-row.grand {
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+            color: var(--dark);
+            font-weight: 700;
+            padding-top: 10px;
+            margin-top: 6px;
+            border-top: 1px solid var(--light-border);
+        }
+        .free-label { color: #4caf50; }
+
+        .card-placeholder {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+            font-family: 'Crimson Text', serif;
+            font-size: 16px;
+        }
+
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            padding: 32px 48px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+        }
+        footer .footer-logo img { height: 60px; opacity: 0.8; }
+        .footer-copyright { text-align: center; font-family: 'Crimson Text', serif; }
+
+        @media (max-width: 720px) {
+            .header { padding: 14px 20px; }
+            .success-wrapper { grid-template-columns: 1fr; }
+            .success-left { align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo"
+         onerror="this.style.display='none'">
+    <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="reservation.html">Reservation</a>
+    </nav>
+    <div class="social-icons">
+        <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook"></a>
+        <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram"></a>
+    </div>
+</header>
+
+<main>
+    <div class="success-wrapper">
+
+        <!-- LEFT -->
+        <div class="success-left">
+            <div class="tick-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+
+            <div>
+                <h1 class="success-heading">Order<br>Confirmed!</h1>
+                <p class="success-sub" style="margin-top:14px;">
+                    Thank you for your order. Our kitchen has been notified
+                    and your meal is being prepared with care.
+                </p>
+            </div>
+
+            <p class="status-msg" id="statusMsg">
+                <span class="spinner" id="spinner"></span>
+                <span id="statusText">Verifying your payment…</span>
+            </p>
+
+            <div class="action-btns" id="actionBtns" style="display:none">
+                <a href="menu.html" class="btn-primary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <line x1="3" y1="12" x2="21" y2="12"/>
+                        <line x1="3" y1="18" x2="21" y2="18"/>
+                    </svg>
+                    Order Again
+                </a>
+                <a href="index.html" class="btn-secondary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+
+            <p class="email-note" id="emailNote" style="display:none">
+                A receipt has been sent to your email.
+            </p>
+        </div>
+
+        <!-- RIGHT: order card -->
+        <div class="order-card">
+            <div class="card-header">
+                <h2>ORDER SUMMARY</h2>
+                <div class="order-id" id="orderId">Processing…</div>
+            </div>
+            <div class="card-body">
+                <div class="order-items" id="orderItems">
+                    <div class="card-placeholder">Loading your order…</div>
+                </div>
+                <div class="totals" id="orderTotals" style="display:none">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <span id="subtotalVal">—</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%)</span>
+                        <span id="taxVal">—</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Delivery</span>
+                        <span class="free-label">Free</span>
+                    </div>
+                    <div class="total-row grand">
+                        <span>Total Paid</span>
+                        <span id="totalVal">—</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <div class="footer-logo">
+        <img src="../assets/images/logo.png" alt="Mealea Logo">
+    </div>
+    <p class="footer-copyright">© 2024 Mealea Restaurant. All rights reserved.</p>
+</footer>
+
+<script>
+const API = 'http://127.0.0.1:5000/api';
+
+async function init() {
+    const params    = new URLSearchParams(window.location.search);
+    const sessionId = params.get('session_id');
+
+    if (!sessionId) {
+       
+        showCODSuccess();
+        return;
+    }
+
+    try {
+   
+        const res = await fetch(
+            `${API}/orders/verify-payment?session_id=${encodeURIComponent(sessionId)}`,
+            { credentials: 'include' }  // FIX: cookie now sent correctly (same origin)
+        );
+
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+            throw new Error(data.error || 'Verification failed');
+        }
+
+        renderOrder(data.order);
+        showSuccess();
+
+    } catch (err) {
+        console.error('Verify error:', err);
+        showError(err.message || 'Could not verify your payment. Please contact us.');
+    }
+}
+
+function showCODSuccess() {
+    document.getElementById('spinner').style.display  = 'none';
+    document.getElementById('statusText').textContent = '✓ Order placed successfully';
+    document.getElementById('statusMsg').style.color  = '#4caf50';
+    document.getElementById('orderItems').innerHTML   =
+        '<div class="card-placeholder">Your order has been received.<br>We\'ll have it ready shortly.</div>';
+    document.getElementById('actionBtns').style.display = 'flex';
+    document.getElementById('orderId').textContent      = 'Cash on Delivery';
+}
+
+function renderOrder(order) {
+    const itemsEl   = document.getElementById('orderItems');
+    const totalsEl  = document.getElementById('orderTotals');
+    const orderIdEl = document.getElementById('orderId');
+
+    orderIdEl.textContent = 'ORD-' + order._id.toString().slice(-6).toUpperCase();
+
+    if (!order.items || order.items.length === 0) {
+        itemsEl.innerHTML = '<div class="card-placeholder">No items found.</div>';
+        return;
+    }
+
+    itemsEl.innerHTML = order.items.map(item => `
+        <div class="order-item">
+            <img src="${item.imageUrl || ''}"
+                 alt="${item.name}"
+                 onerror="this.src='../assets/images/logo.png'">
+            <div class="item-info">
+                <div class="item-name">${item.name}</div>
+                <div class="item-qty">x${item.quantity}</div>
+            </div>
+            <div class="item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+    `).join('');
+
+    const total    = order.totalAmount;
+    const subtotal = total / 1.10;
+    const tax      = total - subtotal;
+
+    document.getElementById('subtotalVal').textContent = '$' + subtotal.toFixed(2);
+    document.getElementById('taxVal').textContent      = '$' + tax.toFixed(2);
+    document.getElementById('totalVal').textContent    = '$' + total.toFixed(2);
+    totalsEl.style.display = '';
+}
+
+function showSuccess() {
+    document.getElementById('spinner').style.display    = 'none';
+    document.getElementById('statusText').textContent   = '✓ Payment verified';
+    document.getElementById('statusMsg').style.color    = '#4caf50';
+    document.getElementById('actionBtns').style.display = 'flex';
+    document.getElementById('emailNote').style.display  = '';
+}
+
+function showError(msg) {
+    document.getElementById('spinner').style.display  = 'none';
+    document.getElementById('statusText').textContent = '⚠️ ' + msg;
+    document.getElementById('statusMsg').style.color  = '#c0392b';
+    document.getElementById('orderItems').innerHTML   =
+        '<div class="card-placeholder">Could not load order details.</div>';
+    document.getElementById('actionBtns').style.display = 'flex';
+}
+
+init();
+</script>
+
+</body>
+</html>

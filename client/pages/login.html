@@ -10,7 +10,6 @@
 </head>
 <body>
 
-    <!-- Split layout -->
     <div class="auth-wrapper">
 
         <!-- LEFT PANEL: decorative brand side -->
@@ -24,7 +23,6 @@
                 <p class="brand-quote">"In every dish, there lies<br>a story waiting to be savored."</p>
                 <p class="brand-attr">— Chef Sok Sabay</p>
             </div>
-            <!-- Decorative petals -->
             <div class="petal p1"></div>
             <div class="petal p2"></div>
             <div class="petal p3"></div>
@@ -41,9 +39,7 @@
                     <p>Sign in to manage your reservations &amp; orders</p>
                 </div>
 
-                <div id="login-error" class="auth-alert hidden">
-                    ⚠️ Incorrect email or password. Please try again.
-                </div>
+                <div id="login-error" class="auth-alert hidden"></div>
 
                 <div class="auth-field">
                     <label for="email">Email Address</label>
@@ -69,7 +65,7 @@
                     <a href="#" class="forgot-link">Forgot password?</a>
                 </div>
 
-                <button class="auth-btn" onclick="handleLogin()">
+                <button class="auth-btn" id="loginBtn" onclick="handleLogin()">
                     <span class="btn-text">Sign In</span>
                     <span class="btn-arrow">→</span>
                 </button>
@@ -95,55 +91,63 @@
         </div>
     </div>
 
-<script>
-    const DEMO_USER = { email: 'guest@mealea.com', password: 'mealea123', name: 'Guest User' };
+    <script src="../js/auth.js"></script>
 
-    function handleLogin() {
-        const email    = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const error    = document.getElementById('login-error');
-        const btn      = document.querySelector('.auth-btn');
-
-        if (!email || !password) {
-            error.textContent = '⚠️ Please enter your email and password.';
-            error.classList.remove('hidden');
-            return;
+    <script>
+        // If already logged in, skip straight to home
+        if (getCurrentUser()) {
+            window.location.href = "index.html";
         }
 
-        btn.classList.add('loading');
-        btn.disabled = true;
+        async function handleLogin() {
+            const emailVal    = document.getElementById("email").value.trim();
+            const passwordVal = document.getElementById("password").value;
+            const errorEl     = document.getElementById("login-error");
+            const btn         = document.getElementById("loginBtn");
 
-        setTimeout(() => {
-            if (email === DEMO_USER.email && password === DEMO_USER.password) {
-                sessionStorage.setItem('mealea_user', JSON.stringify({ name: DEMO_USER.name, email }));
-                error.classList.add('hidden');
-                btn.querySelector('.btn-text').textContent = '✓ Signing in…';
-                setTimeout(() => { window.location.href = 'index.html'; }, 700);
-            } else {
-                error.textContent = '⚠️ Incorrect email or password. Try guest@mealea.com / mealea123';
-                error.classList.remove('hidden');
-                btn.classList.remove('loading');
-                btn.disabled = false;
-                document.querySelector('.auth-card').classList.add('shake');
-                setTimeout(() => document.querySelector('.auth-card').classList.remove('shake'), 500);
+            // Basic client-side validation
+            if (!emailVal || !passwordVal) {
+                showError("Please enter your email and password.");
+                return;
             }
-        }, 900);
-    }
 
-    function togglePassword(id, btn) {
-        const input = document.getElementById(id);
-        if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
-        else                           { input.type = 'password'; btn.textContent = 'Show'; }
-    }
+            // Show loading state
+            btn.classList.add("loading");
+            btn.disabled = true;
+            errorEl.classList.add("hidden");
 
-    function socialLogin(provider) {
-        sessionStorage.setItem('mealea_user', JSON.stringify({ name: provider + ' User', email: 'social@mealea.com' }));
-        window.location.href = 'index.html';
-    }
+            // Call the real backend via auth.js
+            const result = await login(emailVal, passwordVal);
 
-    document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+            // login() redirects on success, so we only reach here on failure
+            if (result && result.error) {
+                showError(result.error);
+                btn.classList.remove("loading");
+                btn.disabled = false;
+                document.querySelector(".auth-card").classList.add("shake");
+                setTimeout(() => document.querySelector(".auth-card").classList.remove("shake"), 500);
+            }
+        }
 
-    if (sessionStorage.getItem('mealea_user')) window.location.href = 'index.html';
-</script>
+        function showError(msg) {
+            const errorEl = document.getElementById("login-error");
+            errorEl.textContent = "⚠️ " + msg;
+            errorEl.classList.remove("hidden");
+        }
+
+        function togglePassword(id, btn) {
+            const input = document.getElementById(id);
+            if (input.type === "password") { input.type = "text";     btn.textContent = "Hide"; }
+            else                            { input.type = "password"; btn.textContent = "Show"; }
+        }
+
+        function socialLogin(provider) {
+            showError(provider + " login is not yet supported. Please use email/password.");
+        }
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter") handleLogin();
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maison — Restaurant Admin</title>
+<link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">Mealea</div>
+    <div class="auth-sub">Admin Panel</div>
+    <div class="auth-field">
+      <label>Email Address</label>
+      <input type="email" id="auth-email" placeholder="admin@mealea.com" autocomplete="off">
+    </div>
+    <div class="auth-field">
+      <label>Password</label>
+      <input type="password" id="auth-password" placeholder="••••••••">
+    </div>
+    <div class="auth-error" id="auth-error">Invalid credentials. Please try again.</div>
+    <button class="btn-primary" onclick="login()">Sign In</button>
+    <div class="auth-hint">Demo: admin@mealea.com / admin123</div>
+  </div>
+</div>
+
+<!-- ── APP ── -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-name">Mealea</div>
+      <div class="brand-label">Restaurant Admin</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <div class="nav-item active" onclick="navigate('dashboard', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+          </svg>
+          Dashboard
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-label">Management</div>
+        <div class="nav-item" onclick="navigate('menu', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          Menu
+        </div>
+        <div class="nav-item" onclick="navigate('orders', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          Online Orders
+          <span class="nav-badge" id="orders-badge">0</span>
+        </div>
+        <div class="nav-item" onclick="navigate('reservations', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Reservations
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">A</div>
+        <div>
+          <div class="user-name">Admin</div>
+          <div class="user-role">Romdoul</div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Sign out">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <div class="topbar">
+      <div class="page-title" id="page-title">Dashboard</div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <button class="notification-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+          <span class="notif-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGES -->
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value" id="stat-orders">0</div>
+            <div class="stat-change up">↑ Today's online orders</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Reservations</div>
+            <div class="stat-value" id="stat-res">0</div>
+            <div class="stat-change">Today's bookings</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Tables Occupied</div>
+            <div class="stat-value" id="stat-tables">0/0</div>
+            <div class="occupancy-bar" style="margin-top:12px">
+              <div class="occupancy-fill" id="occupancy-fill" style="width:0%"></div>
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px" id="occupancy-pct">0% Occupancy</div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <!-- Recent Orders -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Recent Orders</div>
+              <a class="card-action" onclick="navigate('orders', document.querySelector('[onclick*=orders]'))">View all →</a>
+            </div>
+            <div id="dash-orders"></div>
+          </div>
+
+          <!-- Tonight's Reservations -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Today's Reservations</div>
+              <a class="card-action" onclick="navigate('reservations', document.querySelector('[onclick*=reservations]'))">View all →</a>
+            </div>
+            <div id="dash-reservations"></div>
+          </div>
+        </div>
+      </div>
+      <!-- end DASHBOARD -->
+
+      <!-- ── MENU MANAGEMENT ── -->
+      <div class="page" id="page-menu">
+        <div class="toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="Search menu items…" oninput="filterMenu(this.value)">
+          </div>
+          <select class="filter-select" onchange="filterMenuCat(this.value)">
+            <option value="">All Categories</option>
+            <option>Appetizers</option>
+            <option>Main</option>
+            <option>Dessert</option>
+            <option>Drink</option>
+          </select>
+          <button class="btn-add" onclick="openMenuModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add Item
+          </button>
+        </div>
+        <div class="menu-grid" id="menu-grid"></div>
+      </div>
+      <!-- end MENU -->
+
+      <!--ONLINE ORDERS -->
+      <div class="page" id="page-orders">
+        <div class="toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="Search by customer or order…" oninput="filterOrders(this.value)">
+          </div>
+          <select class="filter-select" onchange="filterOrderStatus(this.value)">
+            <option value="">All Status</option>
+            <option>Pending</option>
+            <option>Preparing</option>
+            <option>Ready</option>
+            <option>Delivered</option>
+            <option>Cancelled</option>
+          </select>
+          <button class="btn-add" onclick="openOrderModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Order
+          </button>
+        </div>
+        <div class="card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Order</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="orders-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end ORDERS -->
+
+      <!--RESERVATIONS -->
+      <div class="page" id="page-reservations">
+        <div class="section-header">
+          <div class="section-title">Table Availability</div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot available"></div> Available</div>
+            <div class="legend-item"><div class="legend-dot occupied"></div> Occupied</div>
+          </div>
+        </div>
+        <div class="table-grid" id="table-grid"></div>
+
+        <div class="toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="Search by name or table…" oninput="filterReservations(this.value)">
+          </div>
+          <select class="filter-select" onchange="filterResStatus(this.value)">
+            <option value="">All Status</option>
+            <option>Confirmed</option>
+            <option>Seated</option>
+            <option>Waiting</option>
+            <option>Cancelled</option>
+          </select>
+          <button class="btn-add" onclick="openResModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            New Reservation
+          </button>
+        </div>
+
+        <div class="card">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Table</th>
+                <th>Guest</th>
+                <th>Party</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reservations-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- end RESERVATIONS -->
+
+    </div><!-- end .content -->
+  </div><!-- end .main -->
+</div><!-- end #app -->
+
+<!-- ── MENU MODAL ── -->
+<div class="modal-overlay" id="menu-modal">
+  <div class="modal">
+    <div class="modal-title" id="menu-modal-title">Add Menu Item</div>
+
+    <div class="form-row">
+      <label>Item Photo</label>
+      <!-- Image Upload Area (shown when no image selected) -->
+      <div class="img-upload-area" id="m-img-upload-area">
+        <input type="file" id="m-img-file" accept="image/*" onchange="onImageSelected(this)">
+        <div class="upload-label">Click or drag to upload image</div>
+        <div class="upload-hint">JPG, PNG, WEBP · Max 5MB</div>
+      </div>
+      <!-- Image Preview (shown after selection) -->
+      <div class="img-preview-wrap" id="m-img-preview-wrap">
+        <img id="m-img-preview" src="" alt="Preview">
+        <button class="img-preview-remove" onclick="removeImagePreview()" title="Remove image">✕</button>
+      </div>
+    </div>
+
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Item Name</label>
+        <input type="text" id="m-name" placeholder="e.g. Duck Confit">
+      </div>
+      <div class="form-row">
+        <label>Category</label>
+        <select id="m-cat">
+          <option>Appetizers</option>
+          <option>Main</option>
+          <option>Dessert</option>
+          <option>Drink</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <label>Price ($)</label>
+      <input type="number" id="m-price" placeholder="0.00" step="0.01">
+    </div>
+
+    <div class="form-row">
+      <label>Description</label>
+      <textarea id="m-desc" placeholder="Brief description of the dish…"></textarea>
+    </div>
+
+    <div class="form-row">
+      <label>Available</label>
+      <br>
+      <label class="toggle-switch" style="margin-top:10px">
+        <input type="checkbox" id="m-available" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('menu-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveMenuItem()">Save Item</button>
+    </div>
+  </div>
+</div>
+
+<!--ORDER -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal">
+    <div class="modal-title">New Online Order</div>
+    <div class="form-row">
+      <label>Customer Name</label>
+      <input type="text" id="o-name" placeholder="Full name">
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Phone</label>
+        <input type="text" id="o-phone" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-row">
+        <label>Order Type</label>
+        <select id="o-type">
+          <option>Delivery</option>
+          <option>Pickup</option>
+          <option>Dine-in</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Items (comma separated)</label>
+      <input type="text" id="o-items" placeholder="e.g. Seared Duck, Crème Brûlée">
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Total ($)</label>
+        <input type="number" id="o-total" placeholder="0.00" step="0.01">
+      </div>
+      <div class="form-row">
+        <label>Status</label>
+        <select id="o-status">
+          <option>Pending</option>
+          <option>Preparing</option>
+          <option>Ready</option>
+          <option>Delivered</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('order-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveOrder()">Create Order</button>
+    </div>
+  </div>
+</div>
+
+<!--RESERVATION -->
+<div class="modal-overlay" id="res-modal">
+  <div class="modal">
+    <div class="modal-title" id="res-modal-title">New Reservation</div>
+    <div class="form-row">
+      <label>Guest Name</label>
+      <input type="text" id="r-name" placeholder="Full name">
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Phone</label>
+        <input type="text" id="r-phone" placeholder="+1 (555) 000-0000">
+      </div>
+      <div class="form-row">
+        <label>Party Size</label>
+        <select id="r-guests">
+          <option>1</option><option>2</option><option>3</option><option>4</option>
+          <option>5</option><option>6</option><option>8</option><option>10</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Date</label>
+        <input type="date" id="r-date">
+      </div>
+      <div class="form-row">
+        <label>Time</label>
+        <input type="time" id="r-time" value="19:00">
+      </div>
+    </div>
+    <div class="form-cols">
+      <div class="form-row">
+        <label>Table</label>
+        <select id="r-table">
+          <option value="">Auto-assign</option>
+          <option>T1 - Window</option><option>T2 - Window</option>
+          <option>T5 - Booth</option><option>T6 - Booth</option>
+          <option>T10 - Patio</option><option>T12 - Private</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Status</label>
+        <select id="r-status">
+          <option>Confirmed</option>
+          <option>Waiting</option>
+          <option>Seated</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Special Notes</label>
+      <textarea id="r-notes" placeholder="Allergies, occasions, preferences…"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('res-modal')">Cancel</button>
+      <button class="btn-save" onclick="saveReservation()">Save Reservation</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="toast" id="toast">
+  <span id="toast-icon">✓</span>
+  <span id="toast-msg">Saved successfully</span>
+</div>
+
+<script src="../js/admin.js"></script>
+</body>
+</html>

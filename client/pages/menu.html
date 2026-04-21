@@ -5,15 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Menu — Mealea Restaurant</title>
 
-  <!-- Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" />
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Moulpali&display=swap" rel="stylesheet">
-
-  <!-- CSS -->
   <link rel="stylesheet" href="../css/menu.css">
-
-  <!-- jQuery (for toast timing) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -22,11 +16,17 @@
     <img src="../assets/images/logo.png" alt="Mealea Logo" class="logo" />
     <nav class="nav-links">
       <a href="index.html">Home</a>
-      <a href="about.html">About</a>
       <a href="menu.html" style="color: var(--gold);">Menu</a>
       <a href="reservation.html">Reservation</a>
     </nav>
     <div class="nav-right">
+      <!-- Auth area — updated by auth.js -->
+      <div id="nav-user-info" style="display:none; align-items:center; gap:10px; font-size:13px; color:#72383d;">
+        <span>👤 <span id="nav-username"></span></span>
+        <button onclick="handleLogout()" class="nav-logout-btn">Sign Out</button>
+      </div>
+      <a href="login.html" id="nav-login-btn" class="nav-login-btn">Sign In</a>
+
       <div class="social-icons">
         <a href="https://www.facebook.com/AUPPkh"><img src="../assets/images/fb.png" alt="Facebook" /></a>
         <a href="https://www.instagram.com/mealea.bodge/"><img src="../assets/images/ig.png" alt="Instagram" /></a>
@@ -49,14 +49,13 @@
 
   <!-- ── CATEGORY TABS ── -->
   <nav class="category-nav">
-    <a href="#all-menu"        class="cat-tab active" data-section="all-menu">All</a>
-    <a href="#appetizer-menu" class="cat-tab active" data-section="appetizer-menu">Appetizers</a>
+    <a href="#all-menu"       class="cat-tab active" data-section="all-menu">All</a>
+    <a href="#appetizer-menu" class="cat-tab"        data-section="appetizer-menu">Appetizers</a>
     <a href="#main-menu"      class="cat-tab"        data-section="main-menu">Main Dishes</a>
     <a href="#dessert-menu"   class="cat-tab"        data-section="dessert-menu">Desserts</a>
     <a href="#takeout-menu"   class="cat-tab"        data-section="takeout-menu">Takeout</a>
-    <a href="#drink-menu"     class="cat-tab"        data-section="drink-menu">Drinks & Beverages</a>
+    <a href="#drink-menu"     class="cat-tab"        data-section="drink-menu">Drinks &amp; Beverages</a>
   </nav>
-
 
   <!-- ── ALL ITEMS ── -->
   <section class="menu-section" id="all-menu">
@@ -65,12 +64,12 @@
       <p>View everything we offer</p>
       <div class="section-divider"></div>
     </div>
-    <div class="menu-grid" id="grid-all"></div>
+    <div class="menu-grid" id="grid-all">
+      <!-- Loading skeleton -->
+      <p style="grid-column:1/-1; text-align:center; padding:40px; color:#aaa;">Loading menu…</p>
+    </div>
   </section>
-
   <hr class="section-sep" />
-
-
 
   <!-- ── APPETIZERS ── -->
   <section class="menu-section" id="appetizer-menu">
@@ -81,7 +80,6 @@
     </div>
     <div class="menu-grid" id="grid-appetizer"></div>
   </section>
-
   <hr class="section-sep" />
 
   <!-- ── MAIN DISHES ── -->
@@ -93,7 +91,6 @@
     </div>
     <div class="menu-grid" id="grid-main"></div>
   </section>
-
   <hr class="section-sep" />
 
   <!-- ── DESSERTS ── -->
@@ -105,6 +102,7 @@
     </div>
     <div class="menu-grid" id="grid-dessert"></div>
   </section>
+  <hr class="section-sep" />
 
   <!-- ── TAKEOUT ── -->
   <section class="menu-section" id="takeout-menu">
@@ -115,56 +113,47 @@
     </div>
     <div class="menu-grid" id="grid-takeout"></div>
   </section>
-
   <hr class="section-sep" />
-  
+
   <!-- ── DRINKS ── -->
   <section class="menu-section" id="drink-menu">
     <div class="section-header">
-      <h2>Drink</h2>
+      <h2>DRINKS &amp; BEVERAGES</h2>
       <p>Refreshing drinks to complete your Mealea dining journey</p>
       <div class="section-divider"></div>
     </div>
     <div class="menu-grid" id="grid-drink"></div>
   </section>
 
-  <hr class="section-sep" />
-
   <!-- ── TOAST ── -->
   <div id="toast"></div>
 
-      <footer>
-        <div class="footer-top">
-            <!-- Footer Logo and Social Icons -->
-            <div class="footer-logo">
-                <img src="../assets/images/logo.png" alt="Company Logo" height="100" />
-            </div>
-
-            <!-- Footer Info -->
-            <div class="footer-info">
-                <div>
-                    <div class="info-title">Opening Hours</div>
-                    <p>Lunch Service: 11:30 AM - 2:00 PM</p>
-                    <p>Dinner Service: 5:30 PM - 10:00 PM</p>
-                </div>
-
-                <div>
-                    <p class="info-title">Contact</p>
-                    <p>Phone: (123) 456-7890</p>
-                    <p>Email: mealea@gmail.com</p>
-                </div>
-            </div>
-
+  <footer>
+    <div class="footer-top">
+      <div class="footer-logo">
+        <img src="../assets/images/logo.png" alt="Company Logo" height="100" />
+      </div>
+      <div class="footer-info">
+        <div>
+          <div class="info-title">Opening Hours</div>
+          <p>Lunch Service: 11:30 AM - 2:00 PM</p>
+          <p>Dinner Service: 5:30 PM - 10:00 PM</p>
         </div>
+        <div>
+          <p class="info-title">Contact</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Email: mealea@gmail.com</p>
+        </div>
+      </div>
+    </div>
+    <hr class="footer-divider"/>
+    <p class="footer-copyright">© 2024 Mealea. All rights reserved.</p>
+  </footer>
 
-        <!-- Footer Copyright -->
-        <hr class="footer-divider"/>
-        <p class="footer-copyright">© 2024 Mealea. All rights reserved.</p>
-    </footer>
 
-
-  <!-- JS -->
-  <script src="../js/menu.js"></script>
   <script src="../js/cart.js"></script>
+  <script src="../js/auth.js"></script>
+  <script type="module" src="../js/menu.js"></script>
+
 </body>
 </html>

@@ -22,12 +22,12 @@ const menuSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Category is required'],
-        // These match the groups from your mock data
+  
         enum: ['Appetizer', 'Main', 'Dessert', 'Drink'] 
     },
     tag: {
         type: String,
-        // Optional field for "Signature", "Popular", etc.
+
         default: '' 
     },
     isTakeoutAvailable: {

@@ -1,86 +1,143 @@
 // server/services/orderService.js
 const Order = require('../models/Order');
-const Cart = require('../models/Cart');
+const Cart  = require('../models/Cart');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+
+exports.createOrder = async (userId, items, paymentMethod = 'cod', address = '') => {
+    const orderItems = items.map(item => ({
+        menuItem: item._id || item.id,
+        name:     item.name,
+        price:    item.price,
+        quantity: item.qty,
+        imageUrl: item.img || item.imageUrl || ''   
+    }));
+
+    const subtotal    = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const tax         = subtotal * 0.10;
+    const totalAmount = subtotal + tax;              
+
+    const order = await Order.create({
+        user:          userId,
+        items:         orderItems,
+        totalAmount,
+        paymentMethod,
+        paymentStatus: 'pending',
+        address,
+    });
+
+    await Cart.findOneAndUpdate({ user: userId }, { items: [] });
+
+    return order;
+};
+
 exports.createCheckoutSession = async (userId, userEmail) => {
-    // 1. Fetch the user's cart and populate the menu items to get prices
     const cart = await Cart.findOne({ user: userId }).populate('items.menuItem');
-    
+
     if (!cart || cart.items.length === 0) {
-        throw new Error("Your cart is empty.");
+        throw new Error('Your cart is empty.');
     }
 
-    // 2. Format items for Stripe and calculate the total amount
-    let totalAmount = 0;
+    let subtotal = 0;
     const lineItems = cart.items.map(cartItem => {
         const dish = cartItem.menuItem;
-        totalAmount += (dish.price * cartItem.quantity);
+        subtotal += dish.price * cartItem.quantity;
 
         return {
             price_data: {
                 currency: 'usd',
                 product_data: {
-                    name: dish.name,
-                    images: [dish.imageUrl], // Optional, looks nice on Stripe checkout
+                    name:   dish.name,
+                    images: [dish.imageUrl],
                 },
-                unit_amount: Math.round(dish.price * 100), // Stripe expects amounts in cents
+                unit_amount: Math.round(dish.price * 100),
             },
             quantity: cartItem.quantity,
         };
     });
 
-    // 3. Create the Stripe Checkout Session
+    const taxAmount = Math.round(subtotal * 0.10 * 100);
+    lineItems.push({
+        price_data: {
+            currency:     'usd',
+            product_data: { name: 'Tax (10%)' },
+            unit_amount:  taxAmount,
+        },
+        quantity: 1,
+    });
+
     const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        customer_email: userEmail,
-        line_items: lineItems,
-        mode: 'payment',
-        success_url: `${process.env.CLIENT_URL}/order-success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${process.env.CLIENT_URL}/cart`,
+        customer_email:       userEmail,
+        line_items:           lineItems,
+        mode:                 'payment',
+        success_url: `${process.env.CLIENT_URL}/pages/order-success.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:  `${process.env.CLIENT_URL}/pages/cart.html`,
     });
 
-    // 4. Create a "Pending" Order in our database
+
     const orderItems = cart.items.map(cartItem => ({
         menuItem: cartItem.menuItem._id,
-        name: cartItem.menuItem.name,
-        price: cartItem.menuItem.price,
-        quantity: cartItem.quantity
+        name:     cartItem.menuItem.name,
+        price:    cartItem.menuItem.price,
+        quantity: cartItem.quantity,
+        imageUrl: cartItem.menuItem.imageUrl || ''  
     }));
 
+    const tax         = subtotal * 0.10;
+    const totalAmount = subtotal + tax;            
+
     await Order.create({
-        user: userId,
-        items: orderItems,
-        totalAmount: totalAmount,
+        user:            userId,
+        items:           orderItems,
+        totalAmount,                                
+        paymentMethod:   'card',
         stripeSessionId: session.id,
-        paymentStatus: 'pending'
+        paymentStatus:   'pending',
     });
 
-    // 5. Return the Stripe URL to redirect the user
     return session.url;
 };
 
 exports.verifyAndCompleteOrder = async (sessionId, userId) => {
-    // 1. Fetch the session directly from Stripe to ensure it's valid
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.payment_status !== 'paid') {
-        throw new Error("Payment was not completed.");
+        throw new Error('Payment was not completed.');
     }
 
-    // 2. Find the pending order in our database using the session ID
     const order = await Order.findOne({ stripeSessionId: sessionId });
-    
+
     if (!order) {
-        throw new Error("Order not found.");
+        throw new Error('Order not found.');
     }
 
-    // 3. Update order status to paid
+    if (order.paymentStatus === 'paid') {
+        return order; // idempotent
+    }
+
     order.paymentStatus = 'paid';
     await order.save();
 
-    // 4. Empty the user's cart now that the order is successful
     await Cart.findOneAndUpdate({ user: userId }, { items: [] });
 
+    return order;
+};
+
+
+exports.getAllOrders = async () => {
+    return await Order.find({})
+        .populate('user', 'name email')
+        .sort({ createdAt: -1 });
+};
+
+
+exports.updateOrderStatus = async (id, status) => {
+    const order = await Order.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true, runValidators: true }
+    );
+    if (!order) throw new Error('Order not found');
     return order;
 };

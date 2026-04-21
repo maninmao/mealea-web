@@ -22,6 +22,7 @@
             <a href="reservation.html" class="nav-active">Reservation</a>
         </nav>
         <div class="nav-auth-area">
+            <!-- Populated by auth.js updateAuthUI() -->
             <div id="nav-user-info" style="display:none; align-items:center; gap:10px; font-family:'DM Sans',sans-serif; font-size:13px; color:#72383d;">
                 <span>👤 <span id="nav-username"></span></span>
                 <button onclick="handleLogout()" class="nav-logout-btn">Sign Out</button>
@@ -33,22 +34,6 @@
             </div>
         </div>
     </header>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = sessionStorage.getItem('mealea_user');
-            if (user) {
-                const parsedUser = JSON.parse(user);
-                document.getElementById('nav-user-info').style.display = 'flex';
-                document.getElementById('nav-username').textContent = parsedUser.name;
-                document.getElementById('nav-login-btn').style.display = 'none';
-            }
-        });
-        function handleLogout() {
-            sessionStorage.removeItem('mealea_user');
-            window.location.href = 'login.html';
-        }
-    </script>
 
     <!-- MAIN RESERVATION LAYOUT -->
     <main class="res-main">
@@ -68,8 +53,7 @@
                 <button class="guest-btn" onclick="selectGuests(4, this)">4</button>
                 <button class="guest-btn" onclick="selectGuests(5, this)">5</button>
                 <button class="guest-btn" onclick="selectGuests(6, this)">6</button>
-                <!-- <button class="guest-btn guest-plus" onclick="selectGuests(7, this)">+</button> -->
-                 <button class="guest-btn guest-plus" onclick="addGuest(this)">+</button>
+                <button class="guest-btn guest-plus" onclick="addGuest(this)">+</button>
             </div>
 
             <!-- DATE -->
@@ -96,14 +80,13 @@
                 <div class="step-num">03</div>
                 <h2 class="step-title">Dinner Seatings</h2>
             </div>
-            <!-- <div class="seating-label">First Seating</div> -->
             <div class="time-slots">
                 <button class="time-btn" onclick="selectTime('17:30', this)">17:30</button>
                 <button class="time-btn" onclick="selectTime('18:00', this)">18:00</button>
                 <button class="time-btn" onclick="selectTime('18:30', this)">18:30</button>
                 <button class="time-btn" onclick="selectTime('19:00', this)">19:00</button>
-            </div><br>
-            <!-- <div class="seating-label" style="margin-top: 16px;">Second Seating</div> -->
+            </div>
+            <br>
             <div class="time-slots">
                 <button class="time-btn" onclick="selectTime('20:30', this)">20:30</button>
                 <button class="time-btn" onclick="selectTime('21:00', this)">21:00</button>
@@ -116,7 +99,6 @@
         <!-- RIGHT COLUMN -->
         <div class="res-right">
             <div class="summary-card">
-                <!-- Photo area -->
                 <div class="summary-photo">
                     <img src="../assets/images/img1.png" alt="Restaurant Evening" onerror="this.style.display='none'">
                     <div class="summary-photo-overlay">
@@ -124,7 +106,6 @@
                     </div>
                 </div>
 
-                <!-- Summary details -->
                 <div class="summary-body">
                     <div class="summary-grid">
                         <div class="summary-field">
@@ -150,13 +131,18 @@
                     <p class="summary-quote">"A curated journey through seasonal clay-fired dishes, paired with regional heritage wines."</p>
 
                     <div class="summary-note">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
                         No deposit required for parties under 6
                     </div>
 
-                    <button class="confirm-btn" onclick="confirmReservation()">
+                    <button class="confirm-btn" id="confirmBtn" onclick="confirmReservation()">
                         Confirm Reservation &rarr;
                     </button>
+
+                    <!-- Shown while waiting for backend response -->
+                    <p id="confirm-status" style="display:none; text-align:center; font-size:13px; margin-top:10px; color:#72383d;"></p>
                 </div>
             </div>
         </div>
@@ -189,6 +175,8 @@
 
 </div>
 
+<!-- auth.js first so handleLogout + getCurrentUser are available -->
+<script src="../js/auth.js"></script>
 <script src="../js/reservation.js"></script>
 
 </body>

@@ -1,14 +1,16 @@
+// server/controllers/reservationController.js
 const reservationService = require('../services/reservationService');
 
 exports.makeReservation = async (req, res) => {
     try {
+
         const reservationData = {
             ...req.body,
-            user: req.user._id,
-            customerName: req.user.name,
-            customerEmail: req.user.email
+            user:          req.user._id,
+            customerName:  req.body.customerName  || req.user.name,
+            customerEmail: req.body.customerEmail || req.user.email
         };
-        
+
         const reservation = await reservationService.createReservation(reservationData);
         res.status(201).json(reservation);
     } catch (error) {
@@ -37,6 +39,13 @@ exports.getAdminReservations = async (req, res) => {
 exports.updateStatus = async (req, res) => {
     try {
         const { status } = req.body;
+
+
+        const validStatuses = ['pending', 'confirmed', 'cancelled'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ message: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
+        }
+
         const updatedReservation = await reservationService.updateReservationStatus(req.params.id, status);
         res.status(200).json(updatedReservation);
     } catch (error) {
