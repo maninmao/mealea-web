@@ -71,8 +71,8 @@ exports.createCheckoutSession = async (userId, userEmail) => {
         customer_email:       userEmail,
         line_items:           lineItems,
         mode:                 'payment',
-        success_url: `${process.env.CLIENT_URL}/pages/order-success.html?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url:  `${process.env.CLIENT_URL}/pages/cart.html`,
+        success_url: `${process.env.CLIENT_URL}/mealea-web/client/pages/order-success.html?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url:  `${process.env.CLIENT_URL}/mealea-web/client/pages/cart.html`,
     });
 
 
