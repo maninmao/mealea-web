@@ -70,7 +70,7 @@ async function handleCOD(cart, address) {
     if (status) { status.style.display = 'block'; status.textContent = 'Sending your order…'; }
 
     try {
-        const res = await fetch('http://127.0.0.1:5000/api/orders/place', {
+        const res = await fetch('http://localhost:5000/api/orders/place', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -109,7 +109,7 @@ async function handleStripe(cart) {
 
         // Sync local cart to DB
         const syncPromises = cart.map(item =>
-            fetch('http://127.0.0.1:5000/api/cart/add', {
+            fetch('http://localhost:5000/api/cart/add', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
@@ -129,7 +129,7 @@ async function handleStripe(cart) {
         }
 
         // Create Stripe session
-        const sessionRes = await fetch('http://127.0.0.1:5000/api/orders/create-checkout-session', {
+        const sessionRes = await fetch('http://localhost:5000/api/orders/create-checkout-session', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'

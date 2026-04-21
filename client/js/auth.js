@@ -1,4 +1,4 @@
-const AUTH_API = "http://127.0.0.1:5000/api/auth";
+const AUTH_API = "http://localhost:5000/api/auth";
 
 // Login
 async function login(email, password) {
