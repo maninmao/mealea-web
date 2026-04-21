@@ -23,18 +23,18 @@ const menuSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Category is required'],
   
-        enum: ['Appetizer', 'Main', 'Dessert', 'Drink'] 
+        enum: ['Appetizer', 'Main', 'Dessert', 'Takeout', 'Drink'] 
     },
     tag: {
         type: String,
 
         default: '' 
     },
-    isTakeoutAvailable: {
-        type: Boolean,
-        // If true, this item will show up on the takeout/ordering page
-        default: false 
-    }
+    // isTakeoutAvailable: {
+    //     type: Boolean,
+    //     // If true, this item will show up on the takeout/ordering page
+    //     default: false 
+    // }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Menu', menuSchema);
